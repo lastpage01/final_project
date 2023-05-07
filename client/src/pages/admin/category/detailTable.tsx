@@ -43,7 +43,7 @@ const DetailTable = () => {
             url="/admin/quan_ly/loai_san_pham"
           />
         )}
-        <table className="table">
+        <table >
           <thead>
             <tr>
               <th>Mã</th>

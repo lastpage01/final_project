@@ -29,7 +29,7 @@ const UpdatePassword = ({phone}:Props) => {
     if (isErr() === false) {
         await updatePassword(phone, currentPass.value, newPass.value)
           .then((data) => {
-            alert("Save new password success");
+            alert("Cập nhật mật khẩu thành công");
             currentPass.reset();
             newPass.reset();
             confirmPass.reset();

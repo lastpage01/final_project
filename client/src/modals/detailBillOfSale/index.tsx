@@ -64,21 +64,21 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
           <div className="wrapper-receiver-information">
             <div className="receiver-information ">Thông tin nhận hàng :</div>
             <div className="wrapper-information">
-              <div className="row">
-                <div className="col-1">Họ và tên</div>
+              <div className="row-detail-bill">
+                <div className="column-1">Họ và tên</div>
                 <div>: {bill.TenNguoiNhan}</div>
               </div>
-              <div className="row">
-                <div className="col-1">Số điện thoại</div>
+              <div className="row-detail-bill">
+                <div className="column-1">Số điện thoại</div>
                 <div>: {bill.SDTNhan}</div>
               </div>
-              <div className="row">
-                <div className="col-1">Địa chỉ</div>
-                <div className="col-2">: {bill.DiaChi}</div>
+              <div className="row-detail-bill">
+                <div className="column-1">Địa chỉ</div>
+                <div className="column-2">: {bill.DiaChi}</div>
               </div>
               {bill.GhiChu && (
-                <div className="row">
-                  <div className="col-1">Ghi chú</div>
+                <div className="row-detail-bill">
+                  <div className="column-1">Ghi chú</div>
                   <div>: {bill.GhiChu}</div>
                 </div>
               )}
@@ -87,30 +87,30 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
 
           <div className="wrapper-bill">
             <div className="bill">Hóa đơn :</div>
-            <div className="row">
-              <div className="col-1">Mã hóa đơn</div>
+            <div className="row-detail-bill">
+              <div className="column-1">Mã hóa đơn</div>
               <div>: {bill.MaHD}</div>
             </div>
-            <div className="row">
-              <div className="col-1">Ngày lập hóa đơn</div>
+            <div className="row-detail-bill">
+              <div className="column-1">Ngày lập hóa đơn</div>
               <div>: {new Date(bill.Ngay).toLocaleDateString()}</div>
             </div>
-            <div className="row">
-              <div className="col-1">Tổng tiền</div>
+            <div className="row-detail-bill">
+              <div className="column-1">Tổng tiền</div>
               <div>: {bill.TongTien}</div>
             </div>
-            <div className="row">
-              <div className="col-1">Phương thức thanh toán</div>
+            <div className="row-detail-bill">
+              <div className="column-1">Phương thức thanh toán</div>
               <div>: {bill.PhuongThucTT}</div>
             </div>
-            <div className="row">
-              <div className="col-1">Thanh toán</div>
+            <div className="row-detail-bill">
+              <div className="column-1">Thanh toán</div>
               <div>
                 : {bill.ThanhToan ? "Đã thanh toán" : "Chưa thanh toán"}
               </div>
             </div>
-            <div className="row">
-              <div className="col-1">Trạng thái </div>
+            <div className="row-detail-bill">
+              <div className="column-1">Trạng thái </div>
               <div>: {bill.TrangThai}</div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
           <table>
             <thead>
               <tr>
-                <th style={{width:'300px'}}>Tên sản phẩm</th>
+                <th style={{ width: "300px" }}>Tên sản phẩm</th>
                 <th>Đơn giá</th>
                 <th>Số lượng</th>
                 <th>Màu</th>
@@ -133,11 +133,12 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
                 listDetailBill.map((detailBill, ind) => {
                   return (
                     <tr key={ind}>
-                      <td style={{padding:'5px 0'}}>
+                      <td style={{ padding: "5px 0" }}>
                         {listProduct &&
-                          listProduct.map((pro) => {
-                            if (pro.Ma === detailBill.MaSP) return pro.Ten;
-                            return <></>;
+                          listProduct.map((pro, i) => {
+                            if (pro.Ma === detailBill.MaSP)
+                              return <div key={i}>{pro.Ten}</div>;
+                            return <div key={i}></div>;
                           })}
                       </td>
                       <td>{detailBill.DonGia}</td>

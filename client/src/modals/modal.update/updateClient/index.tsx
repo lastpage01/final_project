@@ -44,7 +44,6 @@ const UpdateClient = ({ setIsUpdate, client }: Props) => {
   const onChangeBirth = (e: any) => {
     setBirthday(e.target.value);
   };
-  console.log(client.NgaySinh);
 
   const onChangeSex = (e) => {
     setSex(e.target.value);

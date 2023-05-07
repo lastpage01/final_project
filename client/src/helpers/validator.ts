@@ -45,11 +45,11 @@ export const validatePhone = (value: string): Validate => {
   return { errText: "", isErr: false };
 };
 export const validateNumber = (value: string): Validate => {
-  const regex = /^\d+$/;
+  const regex = /^-?\d+$/;
   const { errText, isErr } = isEmpty(value);
   if (isErr) return { errText: errText, isErr: true };
   if (!regex.test(value))
-    return { errText: "chỉ có thể nhập số dương", isErr: true };
+    return { errText: "chỉ có thể nhập số nguyên", isErr: true };
   return { errText: "", isErr: false };
 };
 export const validateSize = (value: string): Validate => {

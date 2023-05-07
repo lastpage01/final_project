@@ -13,6 +13,7 @@ import colorAndSize from "./colorAndSizeSlice";
 import billOfSale from "./billOfSaleSlice";
 import detailBillOfSale from "./detailBillOfSaleSlice";
 import admin from "./adminSlice";
+import cart from "./cartSlice";
 export default combineReducers({
   message,
   user,
@@ -28,4 +29,5 @@ export default combineReducers({
   billOfSale,
   detailBillOfSale,
   admin,
+  cart,
 });

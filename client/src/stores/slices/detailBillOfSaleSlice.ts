@@ -11,6 +11,7 @@ export const detailBillOfSaleSlice = createSlice({
   initialState,
   reducers: {
     getAllDetailBillOfSale(state) {},
+    getAllDetailBillOfSaleByHashSet(state) {},
     retrieveAllDetailBillOfSale(state, action: PayloadAction<any>) {
       state.listDetailBill = action.payload;
     },
@@ -30,6 +31,7 @@ export const {
   retrieveAllDetailBillOfSale,
   getDetailBillOfSaleByIdBill,
   retrieveDetailBillOfSaleByIdBill,
+  getAllDetailBillOfSaleByHashSet
 } = detailBillOfSaleSlice.actions;
 
 export default detailBillOfSaleSlice.reducer;

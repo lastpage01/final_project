@@ -8,6 +8,7 @@ import PrivateRouterAdmin from "./routers/private.router.admin";
 import { configAdmin } from "./routers/config.admin";
 import PrivateRouterClient from "./routers/private.router.client";
 import DefaultLayoutClient from "./layouts/layoutClient";
+import { configClient } from "./routers/config.client";
 
 const pathAuth = ["/login", "/register"];
 
@@ -30,14 +31,17 @@ function App() {
               }
             />
           ))}
-          <Route
-            path="/"
-            element={
-              <PrivateRouterClient>
-                <DefaultLayoutClient />
-              </PrivateRouterClient>
-            }
-          />
+          {configClient.map((path, ind) => (
+            <Route
+              key={ind}
+              path={path.path}
+              element={
+                <PrivateRouterClient>
+                  <DefaultLayoutClient children={<path.component/>}/>
+                </PrivateRouterClient>
+              }
+            />
+          ))}
         </Routes>
       </Router>
     </>

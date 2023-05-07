@@ -24,7 +24,7 @@ const Header = ({ avtStr }: Props): JSX.Element => {
     });
   };
   const handleSetting = () => {
-    navigate("/admin/ho_so");
+    // navigate("/admin/ho_so");
   };
   const handleLogout = () => {
     dispatch(logout());

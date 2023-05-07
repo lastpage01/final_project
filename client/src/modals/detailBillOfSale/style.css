@@ -19,11 +19,11 @@
   /* flex-wrap: wrap; */
   flex-direction: column;
 }
-.container-bill-of-sale .row {
+.container-bill-of-sale .row-detail-bill {
   display: grid;
   grid-template-columns: 1fr 3fr;
 }
-.container-bill-of-sale .col-1 {
+.container-bill-of-sale .column-1 {
   width: 115px;
   font-weight: 510;
   box-sizing: border-box;
@@ -31,7 +31,7 @@
 .container-bill-of-sale .bill {
   font-weight: 900;
 }
-.container-bill-of-sale .wrapper-bill > .row > .col-1 {
+.container-bill-of-sale .wrapper-bill > .row-detail-bill > .column-1 {
   width: 200px;
 }
 

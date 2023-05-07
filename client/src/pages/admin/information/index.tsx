@@ -20,9 +20,9 @@ const Information = () => {
     dispatch(getAdminItemByPhone(user.phone));
   }, [dispatch, user.phone]);
   useEffect(() => {
-    if (avatarUrl && avatarUrl !== user.avatar)
-      dispatch(updateAvatarByPhone({ phone: user.phone, avatar: avatarUrl }));
-  }, [avatarUrl, dispatch, user.avatar, user.phone]);
+    if (avatarUrl)
+      dispatch(updateAvatarByPhone({ SDT: user.phone, Anh: avatarUrl }));
+  }, [avatarUrl, dispatch, user.phone]);
 
   return (
     <WrapperBody isBtn={false}>
@@ -34,7 +34,7 @@ const Information = () => {
             avatar={`/assets/avatar.img/${user.avatar}`}
           />
         </div>
-        {adminItem && <UpdateInformation />}
+        {adminItem && <UpdateInformation admin={adminItem} />}
         <UpdatePassword phone={user.phone} />
       </div>
     </WrapperBody>

@@ -21,7 +21,7 @@ import {
   createColorAndSizeByObject,
 } from "../../../stores/slices/colorAndSizeSlice";
 import ImageProduct from "../../ListArrImg/image";
-import ColorAndSize from "../../ColorAndSize/colorAndSize";
+import ColorAndSize from "../../colorAndSize/colorAndSize";
 import { updateProduct } from "../../../stores/slices/productSlice";
 import UpdateDetailPro from "../updateDetailPro";
 

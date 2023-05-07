@@ -16,7 +16,7 @@ const Brand = () => {
     <WrapperBody title="Danh sách thương hiệu" onClickBtn={handleOpenCreate}>
       <div>
         {isCreate && <CreateBrand setIsCreate={setIsCreate}/>}
-        <table className="table">
+        <table>
           <thead>
             <tr>
               <th>Mã</th>

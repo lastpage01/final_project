@@ -8,10 +8,12 @@ import {
 import {
   createClient,
   deleteClientById,
+  findClientByPhone,
   getAllClients,
   getClientItemById,
   updateClient,
 } from "../../services/client.service";
+import { setMessage } from "../slices/messageSlice";
 
 export function* getAllClientSaga() {
   const res = yield call(getAllClients);
@@ -36,7 +38,9 @@ export function* createClientSaga(action: PayloadAction<any>) {
       alert("Thêm mới thành công");
       handleBack();
     }
-  } catch (e) {}
+  } catch (e) {
+    yield put(setMessage(e.response.data));
+  }
 }
 export function* updateClientSaga(action: PayloadAction<any>) {
   try {
@@ -56,7 +60,9 @@ export function* updateClientSaga(action: PayloadAction<any>) {
       alert("cập nhật thành công");
       handleBack();
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export function* deleteClientSaga(account: PayloadAction<string>) {
@@ -65,10 +71,18 @@ export function* deleteClientSaga(account: PayloadAction<string>) {
     yield call(deleteClientById, id);
   } catch (e) {}
 }
-export function* getClientItemSaga(action: PayloadAction<number>) {
+export function* getClientItemSaga(action: PayloadAction<any>) {
   try {
     const id = action.payload;
     const res = yield call(getClientItemById, id);
+    yield put(retrieveClientItem(res.data[0]));
+  } catch (e) {}
+}
+
+export function* getClientItemByPhoneSaga(action: PayloadAction<any>) {
+  try {
+    const phone = action.payload;
+    const res = yield call(findClientByPhone, phone);
     yield put(retrieveClientItem(res.data[0]));
   } catch (e) {}
 }

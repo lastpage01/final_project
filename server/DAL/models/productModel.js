@@ -11,9 +11,18 @@ export const getAllProduct = () => {
 export const getProductById = (id) => {
   return model.findById(id).exec();
 };
-
+export const getProductByIdNumber = (id) => {
+  return model.find({ Ma: id }).exec();
+};
 export const getProductByIdOfDetailCate = (id) => {
   return model.find({ MaLoai: id }).exec();
+};
+
+export const searchProductByName = (name) => {
+  return model.find({ Ten: { $regex: new RegExp(name, 'i') } });
+};
+export const searchProductByNameAndIdCate = (name, idCate) => {
+  return model.find({ Ten: { $regex: new RegExp(name, 'i') }, MaLoai: idCate });
 };
 export const getProductByIdOfSupplier = (id) => {
   return model.find({ MaNCC: id }).exec();
@@ -34,6 +43,15 @@ export const createProduct = (product) => {
   return model.create(product);
 };
 
+export const deleteUnsetColorAndSize = (product) => {
+  return model.updateMany({ Ma: product.Ma }, { $unset: { KichThuoc_Mau: 1 } });
+};
+
+export const updateColorAndSize = (product) => {
+  return model.updateOne({ Ma: product.Ma }, { $set: { KichThuoc_Mau: product.KichThuoc_Mau } });
+};
+
+
 export const updateProduct = (id, product) => {
   return model.findByIdAndUpdate(id, {
     $set: {
@@ -46,7 +64,6 @@ export const updateProduct = (id, product) => {
       GioiTinh: product.GioiTinh,
       MaThuongHieu: product.MaThuongHieu,
       Anh: product.Anh,
-      KichThuoc_Mau: product.KichThuoc_Mau,
       MaNCC: product.MaNCC,
       KhuyenMai: product.KhuyenMai,
     },

@@ -18,8 +18,6 @@ export function* getBrandItemSaga(action:PayloadAction<number>) {
 export function* createBrandSaga(action: PayloadAction<any>) {
   try {
     const newBrand = action.payload;
-    console.log(newBrand);
-    
     const res = yield call(createBrand, newBrand);
     yield put(createBrandSuccess(res.data));
   } catch (e) {}

@@ -8,10 +8,26 @@ export const getAllDetailBillOfSale = () => {
     headers: setToken(),
   });
 };
+export const getAllDetailBillByHashSet = () => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/detailBillOfSale/getDetailBillOfSaleByHashSet`,
+    headers: setToken(),
+  });
+};
 export const getDetailBillOfSaleByIdBill = (id) => {
   return axios({
     method: "get",
     url: `http://localhost:3000/api/detailBillOfSale/getDetailBillOfSaleByIdBill/${id}`,
     headers: setToken(),
+  });
+};
+
+export const createDetailBillOfSale = (detailBill) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/detailBillOfSale`,
+    headers: setToken(),
+    data: detailBill,
   });
 };

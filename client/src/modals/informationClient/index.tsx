@@ -10,7 +10,6 @@ interface Props {
 }
 
 const InformationClient = ({ client, openModel, setOpenModel }: Props) => {
-  console.log(client);
   const handleCloseModel = () => {
     setOpenModel(false);
   };

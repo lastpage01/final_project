@@ -4,7 +4,11 @@ import {
   createProduct,
   deleteProductById,
   getAllProduct,
+  getAllProductByIdOfDetailCate,
   getProductById,
+  searchProductByName,
+  searchProductByNameAndIdCate,
+  updateColorAndSize,
   updateProductById,
 } from "../../services/product.service";
 import {
@@ -23,6 +27,15 @@ export function* getAllProductSaga() {
   }
 }
 
+export function* getAllProductOfDetailCateSaga(action: PayloadAction<any>) {
+  const id = action.payload;
+  try {
+    const res = yield call(getAllProductByIdOfDetailCate, id);
+    yield put(retrieveProducts(res.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
 export function* getProductByIdSaga(action: PayloadAction<string>) {
   try {
     const id = action.payload;
@@ -33,13 +46,29 @@ export function* getProductByIdSaga(action: PayloadAction<string>) {
     console.log(e);
   }
 }
+export function* searchProductSaga(action: PayloadAction<any>) {
+  try {
+    const { name, idCate } = action.payload;
+    console.log(name, idCate);
+
+    if (idCate) {
+      const res = yield call(searchProductByNameAndIdCate, name, idCate);
+      yield put(retrieveProducts(res.data));
+    } else {
+      const res = yield call(searchProductByName, name);
+      yield put(retrieveProducts(res.data));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export function* deleteProductSaga(action: PayloadAction<string>) {
   const id = action.payload;
   try {
     const res = yield call(deleteProductById, id);
     if (res.data) {
-      yield call(deleteDetailPro,res.data.Ma)
+      yield call(deleteDetailPro, res.data.Ma);
       yield put(deleteProduct(id));
     }
   } catch (e) {
@@ -66,6 +95,7 @@ export function* updateProductSaga(action: PayloadAction<any>) {
   try {
     const res = yield call(updateProductById, product);
     if (res.data) {
+      yield call(updateColorAndSize, res.data.Ma, product.KichThuoc_Mau);
       navigate(res.data.Ma);
     }
   } catch (e) {

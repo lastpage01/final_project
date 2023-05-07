@@ -15,13 +15,14 @@ import {
   validatePhone,
 } from "../../../helpers/validator";
 import { useInput } from "../../../hooks/useInput";
-import { clearMessage, setMessage } from "../../../stores/slices/messageSlice";
-import { findClientByPhone } from "../../../services/client.service";
+import { clearMessage } from "../../../stores/slices/messageSlice";
 import { createClient } from "../../../stores/slices/clientSlice";
 interface Props {
   setIsCreate: (val: boolean) => void;
+  navigateUrl?: string;
+  handleCreateSuccess?: (val: any) => void;
 }
-const CreateClient = ({ setIsCreate }: Props) => {
+const CreateClient = ({ setIsCreate, navigateUrl = "" }: Props) => {
   const navigator = useNavigate();
   const dispatch = useDispatch();
   const { message } = useSelector((state: RootState) => state.message);
@@ -41,31 +42,26 @@ const CreateClient = ({ setIsCreate }: Props) => {
     };
   }, [dispatch]);
   const handleBack = () => {
-    navigator("/admin/quan_ly/khach_hang");
+    navigator(navigateUrl);
     setIsCreate(false);
   };
 
   const handleCreateAccount = async () => {
     if (isErr() === false) {
-      const res = await findClientByPhone(phone.value);
-      if (res.data.length > 0)
-        dispatch(setMessage("số điện thoại đã được sử dụng"));
-      else {
-        dispatch(
-          createClient({
-            name: name.value,
-            phone: phone.value,
-            email: email.value,
-            sex,
-            birthday,
-            address,
-            handleBack: () => {
-              handleBack();
-            },
-          })
-        );
-        dispatch(clearMessage());
-      }
+      dispatch(
+        createClient({
+          name: name.value,
+          phone: phone.value,
+          email: email.value,
+          sex,
+          birthday,
+          address,
+          handleBack: () => {
+            handleBack();
+          },
+        })
+      );
+      dispatch(clearMessage());
     }
   };
 
@@ -108,7 +104,7 @@ const CreateClient = ({ setIsCreate }: Props) => {
   return (
     <DefaultModel onClickCancel={handleBack}>
       <div>
-        <h3 className="title">Thêm mới tài khoản</h3>
+        <h3 className="title">Thêm mới khách hàng</h3>
         <div className="wrapper-create-client">
           <div className="wrapper-input">
             <InputField

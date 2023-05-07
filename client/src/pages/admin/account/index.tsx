@@ -17,7 +17,7 @@ const Account = () => {
     <WrapperBody title="Danh sách tài khoản" onClickBtn={handleOpenCreate}>
       <>
         {isCreate && <CreateAccount setIsCreate={setIsCreate} />}
-        <table className="table">
+        <table>
           <thead>
             <tr>
               <th></th>

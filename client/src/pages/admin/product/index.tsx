@@ -32,7 +32,7 @@ const Product = () => {
       <WrapperBody title="Danh sách sản phẩm" onClickBtn={handleOpenCreate}>
         <>
           {isCreate && <CreateProduct setIsCreate={setIsCreate} />}
-          <table className="table">
+          <table className="">
             <thead>
               <tr>
                 <th></th>

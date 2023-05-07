@@ -5,6 +5,10 @@ import {
   getAllProduct,
   getAllProductsSortById,
   getProductById,
+  getProductByIdOfDetailCate,
+  searchProductByName,
+  searchProductByNameAndIdCate,
+  updateColorAndSize,
   updateProduct,
 } from "../DAL/models/productModel";
 
@@ -28,6 +32,44 @@ productRouter.get("/getProductById/:id", (req, res) => {
         res.status(404).send("not found id");
       });
   else res.status(404).send("not found id");
+});
+
+productRouter.get("/getProductByIdOfDetailCate/:id", (req, res) => {
+  const { id } = req.params;
+  if (id)
+    getProductByIdOfDetailCate(id)
+      .then((data) => {
+        if (data) res.json(data);
+        else res.status(404).send("not found id");
+      })
+      .catch((e) => {
+        res.status(404).send("not found id");
+      });
+  else res.status(404).send("not found id");
+});
+
+
+productRouter.get("/searchProductByName", (req, res) => {
+  const { Ten } = req.query;
+  searchProductByName(Ten)
+    .then((data) => {
+      if (data) res.json(data);
+      else res.status(404).send("not found name");
+    })
+    .catch((e) => {
+      res.status(404).send("not found name");
+    });
+});
+productRouter.get("/searchProductByNameAndIdCate", (req, res) => {
+  const { Ten, MaLoai } = req.query;
+  searchProductByNameAndIdCate(Ten, MaLoai)
+    .then((data) => {
+      if (data) res.json(data);
+      else res.status(404).send("not found name");
+    })
+    .catch((e) => {
+      res.status(404).send("not found name");
+    });
 });
 
 productRouter.delete("/:id", (req, res) => {
@@ -57,8 +99,17 @@ productRouter.put("/:id", (req, res) => {
   const { id } = req.params;
   const product = req.body;
   updateProduct(id, product).then((data) => {
-    if (data) res.json(data);
-    else res.status(404).send("không tìm thấy sản phẩm");
+    updateColorAndSize({ Ma: data.Ma, KichThuoc_Mau: product.KichThuoc_Mau })
+    res.json(data);
   });
+});
+productRouter.put("/updateColorAndSize/:id", (req, res) => {
+  const { id } = req.params;
+  const { KichThuoc_Mau } = req.body;
+  console.log(KichThuoc_Mau);
+  console.log(id);
+  updateColorAndSize({ Ma: id, KichThuoc_Mau: KichThuoc_Mau }).then(data => {
+    res.json(data);
+  })
 });
 export default productRouter;

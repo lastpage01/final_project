@@ -14,10 +14,12 @@ export const productSlice = createSlice({
     retrieveProducts(state, action: PayloadAction<any>) {
       state.listProduct = action.payload;
     },
+    getAllProductByIdOfDetailCate(state, action: PayloadAction<any>) {},
     getProductById(state, action: PayloadAction<string>) {},
     retrieveProductItem(state, action: PayloadAction<any>) {
       state.productItem = action.payload;
     },
+    searchProduct(state, action: PayloadAction<any>) {},
     deleteProduct(state, action: PayloadAction<string>) {
       state.listProduct = state.listProduct.filter(
         (pro) => pro._id !== action.payload
@@ -61,6 +63,8 @@ export const {
   createProduct,
   deleteProduct,
   updateProduct,
+  getAllProductByIdOfDetailCate,
+  searchProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;

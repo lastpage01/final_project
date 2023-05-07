@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import {
-  ChangeName,
-  GetMe,
-  Login,
-  LoginSuccess,
-  UserState,
-} from "../types/user";
+import { GetMe, Login, LoginSuccess, UserState } from "../types/user";
 
 const user = JSON.parse(localStorage.getItem("user")!);
 
@@ -52,9 +46,11 @@ export const userSlider = createSlice({
       state.isAdmin = false;
       state.avatar = null;
     },
-    actionChangeName(state, action: PayloadAction<ChangeName>) {},
     updateAvatarByPhone(state, action: PayloadAction<any>) {
-      state.avatar = action.payload.avatar;
+      state.avatar = action.payload.Anh;
+    },
+    updateNameUser(state, action: PayloadAction<any>) {
+      state.username = action.payload;
     },
   },
 });
@@ -64,9 +60,9 @@ export const {
   loginActionSuccess,
   loginActionFail,
   logout,
-  actionChangeName,
   getMe,
   updateAvatarByPhone,
+  updateNameUser,
 } = userSlider.actions;
 
 export default userSlider.reducer;

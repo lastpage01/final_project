@@ -9,7 +9,12 @@ export const getAllBillOfSale = () => {
 export const getBillOfSaleById = (id) => {
   return model.findById(id).exec();
 };
-
+export const getAllBillOfSaleSortById = () => {
+  return model.find().sort({ MaHD: -1 }).exec();
+};
+export const createBillOfSale = (bill) => {
+  return model.create(bill);
+};
 export const updateBillOfSale = (id, bill) => {
   return model.findByIdAndUpdate(id, {
     $set: {

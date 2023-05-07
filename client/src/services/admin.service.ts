@@ -24,18 +24,12 @@ export const findAdminByPhone = (phone) => {
   });
 };
 
-export const updateAdmin = (id, name, birthday, email?, sex?, address?) => {
+export const updateAdmin = (id, admin) => {
   return axios({
     method: "put",
     url: `http://localhost:3000/api/admins/${id}`,
     headers: setToken(),
-    data: {
-      Ten: name,
-      NgaySinh: birthday,
-      Email: email,
-      GioiTinh: sex,
-      DiaChi: address,
-    },
+    data: admin,
   });
 };
 
@@ -45,7 +39,7 @@ export const createAdmin = (
   birthday: string,
   email?: string,
   sex?: string,
-  address?: string,
+  address?: string
 ) => {
   return axios({
     method: "post",

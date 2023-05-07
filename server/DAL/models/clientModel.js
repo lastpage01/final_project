@@ -33,9 +33,6 @@ export const updateClient = (id, client) => {
 // export const getAllCategoriesSortById = () => {
 //   return model.find().sort({ Ma: -1 }).exec();
 // };
-export const getCategoryById = (id) => {
-  return model.find({ Ma: id }).limit(1).exec();
-};
 // export const getCategoryByIdOfMongo = (id) => {
 //   return model.findById(id).exec();
 // };

@@ -11,6 +11,7 @@ import { ProAdminContext } from "../../pages/admin/product";
 import DeleteModel from "../../modals/deleteModel";
 import { deleteProduct } from "../../stores/slices/productSlice";
 import UpdateProduct from "../../modals/modal.update/updateProduct";
+import { convertSex } from "../../helpers/convert";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const Products = () => {
               return value.Ma === pro.MaLoai ? value.Ten : "";
             })}
           </td>
-          <td>{pro.GioiTinh}</td>
+          <td>{convertSex(pro.GioiTinh)}</td>
           <td>
             <div className="wrapper-icon">
               <Link

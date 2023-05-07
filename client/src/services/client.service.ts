@@ -25,6 +25,8 @@ export const findClientByPhone = (phone) => {
 };
 
 export const updateClient = (id, name, birthday, email?, sex?, address?) => {
+  console.log(name);
+  
   return axios({
     method: "put",
     url: `http://localhost:3000/api/clients/${id}`,

@@ -8,6 +8,7 @@ import {
   findClientByPhone,
   updateClient,
 } from "../../services/client.service";
+import { createAdmin } from "../../services/admin.service";
 
 export function* getAllAccountSaga() {
   try {
@@ -38,13 +39,29 @@ export function* createAccountSaga(action: PayloadAction<any>) {
     );
     if (res.data.success) {
       yield put(createAccountSuccess(res.data.user));
-      alert("thêm mới thành công");
+      alert("Đăng ký thành công");
       yield call(handleBack);
       if (isAdmin === false) {
-        const resClient = yield call(findClientByPhone, phone);
-        if (resClient.data.length > 0) {
-          yield call(updateClient, resClient.data[0]._id, name, birthday);
-        } else yield call(createClient, phone, name, birthday);
+        try {
+          const resClient = yield call(findClientByPhone, phone);
+          if (resClient.data.length > 0) {
+            yield call(
+              updateClient,
+              resClient.data[0]._id,
+              name,
+              birthday,
+              "",
+              "",
+              ""
+            );
+          }
+        } catch (e) {
+          if (e.response.status === 404) {
+            yield call(createClient, phone, name, birthday);
+          }
+        }
+      } else {
+        yield call(createAdmin, phone, name, birthday);
       }
     }
   } catch (e) {}

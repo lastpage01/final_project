@@ -15,8 +15,13 @@ const Client = () => {
   return (
     <WrapperBody title="Danh sách khách hàng" onClickBtn={handleOpenCreate}>
       <>
-        {isCreate && <CreateClient setIsCreate={setIsCreate} />}
-        <table className="table">
+        {isCreate && (
+          <CreateClient
+            setIsCreate={setIsCreate}
+            navigateUrl="/admin/quan_ly/khach_hang"
+          />
+        )}
+        <table>
           <thead>
             <tr>
               <th>Mã</th>

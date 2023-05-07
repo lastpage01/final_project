@@ -14,7 +14,8 @@ export const clientSlice = createSlice({
     retrieveClients(state, action: PayloadAction<any>) {
       state.listClient = action.payload;
     },
-    getClientItem(state, action: PayloadAction<number>) {},
+    getClientItem(state, action: PayloadAction<any>) {},
+    getClientItemByPhone(state, action: PayloadAction<any>) {},
     retrieveClientItem(state, action: PayloadAction<any>) {
       state.clientItem = action.payload;
     },
@@ -54,6 +55,7 @@ export const {
   createClientSuccess,
   updateClient,
   deleteClient,
+  getClientItemByPhone,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

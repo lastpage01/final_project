@@ -73,10 +73,10 @@ export const updatePassword = (
     data: { phone, currentPassword, newPassword },
   });
 };
-export const updateAvatar = (phone: string, avatar: string) => {
+export const updateUser = (user) => {
   return axios({
     method: "post",
-    url: "http://localhost:3000/api/users/updateAvatar",
-    data: { phone, avatar },
+    url: "http://localhost:3000/api/users/updateUser",
+    data: user,
   });
 };

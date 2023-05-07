@@ -17,7 +17,7 @@ const Supplier = () => {
     <WrapperBody title="Danh sách nhà cung cấp" onClickBtn={handleOpenCreate}>
       <div>
         {isCreate && <CreateSupplier setIsCreate={setIsCreate} />}
-        <table className="table">
+        <table>
           <thead>
             <tr>
               <th>Mã</th>

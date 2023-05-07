@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { IconIc24FillPaperplane } from "@gapo_ui/icon";
-
-import { IconIc24FillArchiveBoxXmark, IconIc24FillPencil } from "@gapo_ui/icon";
 import { IconIc24FillEye } from "@gapo_ui/icon";
 import { RootState } from "../../stores";
 import {
@@ -21,9 +19,6 @@ const listStatus = ["Đang xử lý", "Chờ giao hàng", "Đã giao"];
 const BillOfSaleTBody = () => {
   const dispatch = useDispatch();
   const { listBill } = useSelector((state: RootState) => state.billOfSale);
-
-  const [openModelDelete, setOpenModelDelete] = useState(false);
-  const [openModelUpdate, setOpenModelUpdate] = useState(false);
   const [openModelDetail, setOpenModelDetail] = useState(false);
   const idBill = useRef("");
   const billItem = useRef(null);
@@ -32,17 +27,10 @@ const BillOfSaleTBody = () => {
     dispatch(getAllBillOfSale());
   }, [dispatch]);
 
-  const handleDeleteBrand = (id) => {};
   const handleOpenModelDetail = (bill) => {
     idBill.current = bill._id;
     billItem.current = bill;
     setOpenModelDetail(true);
-  };
-  const handleOpenModelDelete = (id) => {
-    setOpenModelDelete(true);
-  };
-  const handleOpenModelUpdate = (sup) => {
-    setOpenModelUpdate(true);
   };
 
   const handleCancelBill = (id) => {
@@ -129,16 +117,6 @@ const BillOfSaleTBody = () => {
                 >
                   <IconIc24FillEye color="lineTertiary" size={14} />
                 </Link>
-                <Link
-                  to={`/admin/quan_ly/`}
-                  className="icon bg-color-pencil"
-                  // onClick={() => handleOpenModelUpdate(pro)}
-                >
-                  <IconIc24FillPencil color="lineTertiary" size={14} />
-                </Link>
-                <Link to={`/admin/quan_ly/`} className="icon bg-color-delete">
-                  <IconIc24FillArchiveBoxXmark color="lineTertiary" size={14} />
-                </Link>
               </div>
             </td>
           </tr>
@@ -151,22 +129,6 @@ const BillOfSaleTBody = () => {
               setIsCreate={setOpenModelDetail}
             />
           )}
-          {/* {openModelDelete === true && (
-            <DeleteModel
-              openModel={openModelDelete}
-              setOpenModel={setOpenModelDelete}
-              onClickDelete={() => handleDeleteBrand(idBrand.current)}
-              title="Xóa loại sản phẩm"
-              Placeholder={`Bạn có chắc chắn muốn xóa Nhà cung cấp có mã = ${idBrand.current} không?`}
-              url="/admin/quan_ly/thuong_hieu"
-            />
-          )}
-          {openModelUpdate && (
-            <UpdateBrand
-              setIsCreate={setOpenModelUpdate}
-              brand={brandItem.current}
-            />
-          )} */}
         </td>
       </tr>
     </>

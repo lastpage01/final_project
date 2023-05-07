@@ -55,6 +55,10 @@ export const billOfSaleSlice = createSlice({
         return b;
       });
     },
+    createBillOfSale(state, action: PayloadAction<any>) {},
+    createBillOfSaleSuccess(state, action: PayloadAction<any>) {
+      state.listBill.push(action.payload);
+    },
   },
 });
 
@@ -66,6 +70,8 @@ export const {
   cancelBillOfSale,
   updateStatusBillOfSale,
   updatePayBillOfSale,
+  createBillOfSale,
+  createBillOfSaleSuccess,
 } = billOfSaleSlice.actions;
 
 export default billOfSaleSlice.reducer;

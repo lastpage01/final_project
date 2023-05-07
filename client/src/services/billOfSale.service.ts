@@ -23,3 +23,12 @@ export const updateBillOfSale = (id, bill) => {
     data: bill,
   });
 };
+
+export const createBillOfSale = (bill) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/billOfSale`,
+    headers: setToken(),
+    data: bill,
+  });
+};

@@ -3,11 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { clearMessage, setMessage } from "../slices/messageSlice";
 import { loginActionFail, loginActionSuccess } from "../slices/userSlice";
 import { Login } from "../types/user";
-import {
-  callApiLogin,
-  signOut,
-  updateAvatar,
-} from "../../services/user.service";
+import { callApiLogin, signOut, updateUser } from "../../services/user.service";
 
 export function* loginSaga(action: PayloadAction<Login>): Generator<any> {
   const { phone, password, success } = action.payload;
@@ -33,10 +29,9 @@ export function* logoutSaga() {
 }
 export function* updateAvatarByPhoneSaga(action: PayloadAction<any>) {
   try {
-    const { phone, avatar } = action.payload;
-    yield call(updateAvatar, phone, avatar);
+    yield call(updateUser, action.payload);
     const user = JSON.parse(localStorage.getItem("user")!);
-    user.avatar = avatar;
+    user.avatar = action.payload.Anh;
     JSON.parse(localStorage.setItem("user", JSON.stringify(user))!);
   } catch (e) {}
 }

@@ -22,7 +22,7 @@ import { createProduct } from "../../../stores/slices/productSlice";
 import { clearStateColorAndSize } from "../../../stores/slices/colorAndSizeSlice";
 import CreateDetailPro from "../createDetailPro";
 import ImageProduct from "../../ListArrImg/image";
-import ColorAndSize from "../../ColorAndSize/colorAndSize";
+import ColorAndSize from "../../colorAndSize/colorAndSize";
 interface Props {
   setIsCreate: (val: boolean) => void;
 }

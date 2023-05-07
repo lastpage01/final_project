@@ -10,3 +10,7 @@ export const getAllDetailBillOfSale = () => {
 export const getDetailBillOfSaleByIdBill = (id) => {
   return model.find({ MaHD: id }).exec();
 };
+
+export const createDetailBillOfSale = (detailBill) => {
+  return model.create(detailBill);
+};

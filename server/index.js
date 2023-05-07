@@ -13,6 +13,7 @@ import clientRouter from "./routers/client";
 import billOfSaleRouter from "./routers/billOfSale";
 import detailBillOfSaleRouter from "./routers/detailBillOfSale";
 import adminRouter from "./routers/admin";
+import cartRouter from "./routers/cart";
 // import { authenticateToken } from "./common/authentication";
 
 const app = express();
@@ -36,6 +37,8 @@ app.use("/api/clients", clientRouter);
 app.use("/api/billOfSale", billOfSaleRouter);
 app.use("/api/detailBillOfSale", detailBillOfSaleRouter);
 app.use("/api/admins", adminRouter);
+app.use("/api/cart", cartRouter);
+
 
 app.listen(post, (res, req) => {
   db()

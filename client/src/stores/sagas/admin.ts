@@ -1,7 +1,9 @@
 import { call, put } from "redux-saga/effects";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { findAdminByPhone } from "../../services/admin.service";
+import { findAdminByPhone, updateAdmin } from "../../services/admin.service";
 import { retrieveAdminItemByPhone } from "../slices/adminSlice";
+import { updateNameUser } from "../slices/userSlice";
+import { updateUser } from "../../services/user.service";
 
 export function* getAdminByPhoneSaga(action: PayloadAction<any>) {
   const phone = action.payload;
@@ -31,26 +33,18 @@ export function* getAdminByPhoneSaga(action: PayloadAction<any>) {
 //     }
 //   } catch (e) {}
 // }
-// export function* updateClientSaga(action: PayloadAction<any>) {
-//   try {
-//     const { id, name, email, sex, birthday, address, handleBack } =
-//       action.payload;
-//     yield;
-//     const res = yield call(
-//       updateClient,
-//       id,
-//       name,
-//       birthday,
-//       email,
-//       sex,
-//       address
-//     );
-//     if (res.data) {
-//       alert("cập nhật thành công");
-//       handleBack();
-//     }
-//   } catch (e) {}
-// }
+export function* updateAdminSaga(action: PayloadAction<any>) {
+  try {
+    const { id, admin } = action.payload;
+    yield call(updateAdmin, id, admin);
+    yield call(updateUser, admin);
+    yield put(updateNameUser(admin.Ten));
+    alert("cập nhật thành công");
+    const user = JSON.parse(localStorage.getItem("user")!);
+    user.username = admin.Ten;
+    JSON.parse(localStorage.setItem("user", JSON.stringify(user))!);
+  } catch (e) {}
+}
 
 // export function* deleteClientSaga(account: PayloadAction<string>) {
 //   try {

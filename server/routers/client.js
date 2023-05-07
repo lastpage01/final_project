@@ -18,9 +18,12 @@ clientRouter.get("/", (req, res) => {
 });
 clientRouter.get("/getClientByPhone", (req, res) => {
   const { phone } = req.query;
-  getClientByPhone(phone).then((data) => {
-    res.json(data);
-  });
+  if (phone)
+    getClientByPhone(phone).then((data) => {
+      if (data.length > 0) res.json(data);
+      else res.status(404).send("Số điện thoại chưa tồn tại");
+    });
+  else res.status(403).send("không có số điện thoại");
 });
 clientRouter.get("/getClientById/:id", (req, res) => {
   const { id } = req.params;
@@ -35,13 +38,21 @@ clientRouter.post("/", (req, res) => {
   client.DiaChi = client.DiaChi ? client.DiaChi : "";
   client.GioiTinh = client.GioiTinh ? client.GioiTinh : "";
   client.Email = client.Email ? client.Email : "";
-  getAllClientsSortById().then((data) => {
-    if (data.length > 0) client.Ma = data[0].Ma + 1;
-    else client.Ma = 1;
-    if (client.Ma)
-      createClient(client).then((data) => {
-        res.json(data);
+
+  getClientByPhone(client.SDT).then((data) => {
+    if (data.length < 1) {
+      getAllClientsSortById().then((data) => {
+        if (data.length > 0) client.Ma = data[0].Ma + 1;
+        else client.Ma = 1;
+        if (client.Ma)
+          createClient(client).then((data) => {
+            res.json(data);
+          });
       });
+    } else {
+      console.log(data);
+      res.status(404).send("Số điện thoại đã tồn tại");
+    }
   });
 });
 

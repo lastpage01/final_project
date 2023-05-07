@@ -105,24 +105,26 @@ userRouter.post("/updatePassword", (req, res) => {
     }
   });
 });
-userRouter.post("/updateAvatar", (req, res) => {
-  const { phone, avatar } = req.body;
-  getMe(phone)
-    .then((data) => {
-      if (data.length > 0) {
-        updateAccount(data[0].id, { Anh: avatar })
-          .then((data) => {
-            res.json(data);
-          })
-          .catch((err) => {
-            res.send(err);
-          });
-      } else {
-        res.status(404).send("không tìm thấy số điện thoại");
-      }
-    })
-    .catch((e) => {
-      res.send(e);
-    });
+userRouter.post("/updateUser", (req, res) => {
+  const user = req.body;
+  if (user.SDT)
+    getMe(user.SDT)
+      .then((data) => {
+        if (data.length > 0) {
+          updateAccount(data[0].id, user)
+            .then((data) => {
+              res.json(data);
+            })
+            .catch((err) => {
+              res.send(err);
+            });
+        } else {
+          res.status(404).send("không tìm thấy số điện thoại");
+        }
+      })
+      .catch((e) => {
+        res.send(e);
+      });
+  else res.status(404).send("không có số điện thoại");
 });
 export default userRouter;

@@ -27,19 +27,15 @@ export const adminSlice = createSlice({
       state.listAdmin.push(action.payload);
     },
     updateAdmin(state, action: PayloadAction<any>) {
-      state.listAdmin = state.listAdmin.map((admin) => {
-        if (admin._id === action.payload.id) {
-          return {
-            ...admin,
-            Ten: action.payload.name,
-            Email: action.payload.email,
-            GioiTinh: action.payload.sex,
-            DiaChi: action.payload.address,
-            NgaySinh: new Date(action.payload.birthday),
-          };
-        }
-        return admin;
-      });
+      const { admin } = action.payload;
+      state.adminItem = {
+        ...state.adminItem,
+        Ten: admin.Ten,
+        Email: admin.Email,
+        GioiTinh: admin.GioiTinh,
+        DiaChi: admin.DiaChi,
+        NgaySinh: new Date(admin.NgaySinh),
+      };
     },
     deleteAdmin(state, action: PayloadAction<string>) {
       state.listAdmin = state.listAdmin.filter(

@@ -15,6 +15,29 @@ export const getProductById = (id: string) => {
     headers: setToken(),
   });
 };
+export const getAllProductByIdOfDetailCate = (id: string) => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/getProductByIdOfDetailCate/${id}`,
+    headers: setToken(),
+  });
+};
+
+export const searchProductByName = (name) => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/searchProductByName?Ten=${name}`,
+    headers: setToken(),
+  });
+};
+
+export const searchProductByNameAndIdCate = (name, idCate) => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/searchProductByNameAndIdCate?Ten=${name}&MaLoai=${idCate}`,
+    headers: setToken(),
+  });
+};
 
 export const deleteProductById = (id: string) => {
   return axios({
@@ -39,5 +62,14 @@ export const updateProductById = (product) => {
     url: `http://localhost:3000/api/products/${product.id}`,
     headers: setToken(),
     data: product,
+  });
+};
+
+export const updateColorAndSize = (id, colorAndSize) => {
+  return axios({
+    method: "put",
+    url: `http://localhost:3000/api/products/updateColorAndSize/${id}`,
+    headers: setToken(),
+    data: { KichThuoc_Mau: colorAndSize },
   });
 };
