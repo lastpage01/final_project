@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { IconIc24FillEye } from "@gapo_ui/icon";
 import { IconIc24FillArchiveBoxXmark } from "@gapo_ui/icon";
 import { IconIc24FillPencil } from "@gapo_ui/icon";
@@ -7,16 +7,16 @@ import { Link } from "react-router-dom";
 
 import { RootState } from "../../stores";
 import Slider from "../../components/Slider";
-import { ProAdminContext } from "../../pages/admin/product";
 import DeleteModel from "../../modals/deleteModel";
 import { deleteProduct } from "../../stores/slices/productSlice";
 import UpdateProduct from "../../modals/modal.update/updateProduct";
 import { convertSex } from "../../helpers/convert";
+import DetailProduct from "../../modals/DetailProduct";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const { setShowProItem, setIdProItem } = useContext<any>(ProAdminContext);
   const [openModel, setOpenModel] = useState(false);
+  const [openModelDetail, setOpenModelDetail] = useState(false);
   const [openModelUpdate, setOpenModelUpdate] = useState(false);
   const idPro = useRef("");
   const productItem = useRef(null);
@@ -26,9 +26,9 @@ const Products = () => {
   const detailCategory = useSelector(
     (state: RootState) => state.detailCategory.listDetailCategory
   );
-  const handleShowDetailProduct = (id: string) => {
-    setShowProItem(true);
-    setIdProItem(id);
+  const handleShowDetailProduct = (pro) => {
+    setOpenModelDetail(true);
+    productItem.current = pro;
   };
 
   const handleDeleteProduct = (id) => {
@@ -43,10 +43,13 @@ const Products = () => {
     <>
       {products.map((pro, index) => (
         <tr key={index}>
+          <td>{pro.Ma}</td>
           <td>
             <Slider slideImg={pro.Anh} url="/assets/img_product/" />
           </td>
-          <td style={{ maxWidth: "400px" }}>{pro.Ten} </td>
+          <td style={{ maxWidth: "300px" }}>
+            <div className="name-product-limit-1">{pro.Ten}</div>
+          </td>
           <td>{pro.GiaBan}</td>
           <td>{pro.SoLuong}</td>
           <td>
@@ -61,7 +64,7 @@ const Products = () => {
                 to={`/admin/quan_ly/san_pham/${pro._id}`}
                 className="icon bg-color-eye"
                 onClick={() => {
-                  handleShowDetailProduct(pro._id);
+                  handleShowDetailProduct(pro);
                 }}
               >
                 <IconIc24FillEye color="lineTertiary" size={14} />
@@ -87,7 +90,7 @@ const Products = () => {
           </td>
         </tr>
       ))}
-      <tr >
+      <tr>
         <td>
           {openModelUpdate && (
             <UpdateProduct
@@ -105,6 +108,15 @@ const Products = () => {
               title="Xóa Sản Phẩm"
               Placeholder={`Bạn có chắc chắn muốn xóa sản phẩm có mã = ${idPro.current} không?`}
               url="/admin/quan_ly/san_pham"
+            />
+          )}
+        </td>
+        <td>
+          {openModelDetail && (
+            <DetailProduct
+              setOpenModel={setOpenModelDetail}
+              url="/admin/quan_ly/san_pham"
+              product={productItem.current}
             />
           )}
         </td>

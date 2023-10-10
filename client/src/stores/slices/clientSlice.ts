@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
   listClient: [],
+  listHashSet: [],
   clientItem: null,
 };
 
@@ -19,11 +20,33 @@ export const clientSlice = createSlice({
     retrieveClientItem(state, action: PayloadAction<any>) {
       state.clientItem = action.payload;
     },
+    getListClientAndTotalMoney(state, action: PayloadAction<any>) {},
+    retrieveListHashSetClient(state, action: PayloadAction<any>) {
+      state.listHashSet = action.payload;
+    },
+    removeClientItemInStore(state) {
+      state.clientItem = null;
+    },
     createClient(state, action: PayloadAction<any>) {},
     createClientSuccess(state, action: PayloadAction<any>) {
       state.listClient.push(action.payload);
     },
     updateClient(state, action: PayloadAction<any>) {
+      state.listClient = state.listClient.map((client) => {
+        if (client._id === action.payload.id) {
+          return {
+            ...client,
+            Ten: action.payload.name,
+            Email: action.payload.email,
+            GioiTinh: action.payload.sex,
+            DiaChi: action.payload.address,
+            NgaySinh: new Date(action.payload.birthday),
+          };
+        }
+        return client;
+      });
+    },
+    updateInformationClient(state, action: PayloadAction<any>) {
       state.listClient = state.listClient.map((client) => {
         if (client._id === action.payload.id) {
           return {
@@ -48,6 +71,8 @@ export const clientSlice = createSlice({
 
 export const {
   getAllClients,
+  getListClientAndTotalMoney,
+  retrieveListHashSetClient,
   retrieveClients,
   getClientItem,
   retrieveClientItem,
@@ -56,6 +81,8 @@ export const {
   updateClient,
   deleteClient,
   getClientItemByPhone,
+  removeClientItemInStore,
+  updateInformationClient,
 } = clientSlice.actions;
 
 export default clientSlice.reducer;

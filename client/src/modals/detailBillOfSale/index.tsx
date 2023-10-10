@@ -9,14 +9,26 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../stores";
 import { Button } from "@gapo_ui/components";
 import InformationClient from "../informationClient";
-import { getDetailBillOfSaleByIdBill } from "../../stores/slices/detailBillOfSaleSlice";
+import {
+  getDetailBillOfSaleByIdBill,
+  removeListDetailBillInStore,
+} from "../../stores/slices/detailBillOfSaleSlice";
 import { getAllProduct } from "../../stores/slices/productSlice";
 
 interface Props {
   bill: any;
   setIsCreate: (val: boolean) => void;
+  url?: string;
+  isShowOrderer?: boolean;
+  isShowIdProduct?: boolean;
 }
-const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
+const DetailBillOfSale = ({
+  bill,
+  setIsCreate,
+  url = "",
+  isShowOrderer = false,
+  isShowIdProduct = false,
+}: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -30,12 +42,15 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
 
   const handleBack = () => {
     setIsCreate(false);
-    navigate("/admin/quan_ly/hoa_don_ban");
+    navigate(url);
   };
   useEffect(() => {
     dispatch(getClientItem(bill.MaKH));
     dispatch(getAllProduct());
     dispatch(getDetailBillOfSaleByIdBill(bill.MaHD));
+    return () => {
+      dispatch(removeListDetailBillInStore());
+    };
   }, [bill.MaHD, bill.MaKH, dispatch]);
 
   const handleSeenClient = () => {
@@ -113,26 +128,36 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
               <div className="column-1">Trạng thái </div>
               <div>: {bill.TrangThai}</div>
             </div>
+            {isShowOrderer && (
+              <div className="row-detail-bill">
+                <div className="column-1">Người lập đơn hàng</div>
+                <div>
+                  : {bill.NguoiLap === "QuanLy" ? "Quản lý" : "Khách hàng"}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        <div className="wrapper-detail-bill">
-          <div className="detail-bill">Chi tiết hóa đơn:</div>
-          <table>
-            <thead>
-              <tr>
-                <th style={{ width: "300px" }}>Tên sản phẩm</th>
-                <th>Đơn giá</th>
-                <th>Số lượng</th>
-                <th>Màu</th>
-                <th>Kích thước</th>
-                <th>Thành tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              {listDetailBill &&
-                listDetailBill.map((detailBill, ind) => {
+        {listDetailBill.length > 0 && (
+          <div className="wrapper-detail-bill">
+            <div className="detail-bill">Chi tiết hóa đơn:</div>
+            <table>
+              <thead>
+                <tr>
+                  {isShowIdProduct&& <th>Mã</th>}
+                  <th style={{ width: "300px" }}>Tên sản phẩm</th>
+                  <th>Đơn giá</th>
+                  <th>Số lượng</th>
+                  <th>Màu</th>
+                  <th>Kích thước</th>
+                  <th>Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listDetailBill.map((detailBill, ind) => {
                   return (
                     <tr key={ind}>
+                      {isShowIdProduct&& <td>{detailBill.MaSP}</td>}
                       <td style={{ padding: "5px 0" }}>
                         {listProduct &&
                           listProduct.map((pro, i) => {
@@ -149,9 +174,10 @@ const DetailBillOfSale = ({ bill, setIsCreate }: Props) => {
                     </tr>
                   );
                 })}
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </DefaultModel>
   );

@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
   listDetailBill: [],
+  listHashSet: [],
   detailBillItem: null,
 };
 
@@ -14,6 +15,16 @@ export const detailBillOfSaleSlice = createSlice({
     getAllDetailBillOfSaleByHashSet(state) {},
     retrieveAllDetailBillOfSale(state, action: PayloadAction<any>) {
       state.listDetailBill = action.payload;
+    },
+    getDetailBillOfSaleByHashSetOfDate(state, action: PayloadAction<any>) {},
+    retrieveDetailBillOfSaleHashSet(state, action: PayloadAction<any>) {
+      state.listHashSet = action.payload;
+    },
+    removeListDetailBillInStore(state) {
+      state.listDetailBill = [];
+    },
+    removeListHashSetOfDetailBillInStore(state) {
+      state.listHashSet = [];
     },
     getDetailBillOfSaleByIdBill(state, action: PayloadAction<any>) {},
     retrieveDetailBillOfSaleByIdBill(state, action: PayloadAction<any>) {
@@ -31,7 +42,11 @@ export const {
   retrieveAllDetailBillOfSale,
   getDetailBillOfSaleByIdBill,
   retrieveDetailBillOfSaleByIdBill,
-  getAllDetailBillOfSaleByHashSet
+  getAllDetailBillOfSaleByHashSet,
+  removeListDetailBillInStore,
+  getDetailBillOfSaleByHashSetOfDate,
+  retrieveDetailBillOfSaleHashSet,
+  removeListHashSetOfDetailBillInStore,
 } = detailBillOfSaleSlice.actions;
 
 export default detailBillOfSaleSlice.reducer;

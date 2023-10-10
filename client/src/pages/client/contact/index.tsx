@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React from "react";
 import Banner from "../../../components.client/Banner/Banner";
 import { Link } from "react-router-dom";

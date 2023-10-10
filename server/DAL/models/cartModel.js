@@ -19,6 +19,9 @@ export const deleteCartItem = (id) => {
 };
 
 export const createCartItem = (cart) => {
-  return model.create(cart).exec();
+  return model.create(cart);
 };
 
+export const deleteManyByIdClient = (id) => {
+  return model.deleteMany({ MaKH: id })
+}

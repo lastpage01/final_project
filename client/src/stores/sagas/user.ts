@@ -3,7 +3,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { clearMessage, setMessage } from "../slices/messageSlice";
 import { loginActionFail, loginActionSuccess } from "../slices/userSlice";
 import { Login } from "../types/user";
-import { callApiLogin, signOut, updateUser } from "../../services/user.service";
+import {
+  callApiLogin,
+  register,
+  signOut,
+  updateUser,
+} from "../../services/user.service";
+import { createClient, findClientByPhone, updateClient } from "../../services/client.service";
 
 export function* loginSaga(action: PayloadAction<Login>): Generator<any> {
   const { phone, password, success } = action.payload;
@@ -33,6 +39,34 @@ export function* updateAvatarByPhoneSaga(action: PayloadAction<any>) {
     const user = JSON.parse(localStorage.getItem("user")!);
     user.avatar = action.payload.Anh;
     JSON.parse(localStorage.setItem("user", JSON.stringify(user))!);
+  } catch (e) {}
+}
+
+export function* registerClientSaga(action: PayloadAction<any>) {
+  try {
+    const { name, password, phone, birthday, navigate } = action.payload;
+    const res = yield call(register, phone, password, name, birthday);
+    if (res.data.success) {
+      yield call(navigate);
+      try {
+        const resClient = yield call(findClientByPhone, phone);
+        if (resClient.data.length > 0) {
+          yield call(
+            updateClient,
+            resClient.data[0]._id,
+            name,
+            birthday,
+            "",
+            "",
+            ""
+          );
+        }
+      } catch (e) {
+        if (e.response.status === 404) {
+          yield call(createClient, phone, name, birthday);
+        }
+      }
+    }
   } catch (e) {}
 }
 // export function* changName(action: PayloadAction<ChangeName>) {

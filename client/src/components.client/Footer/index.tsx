@@ -8,7 +8,7 @@ const Footer = () => {
       <footer className="ftco-footer bg-light ftco-section">
         <div className="container">
           <div className="row">
-            <div className="mouse">
+            <div className="mouse" style={{ zIndex: "1" }}>
               <Link to={"#"} className="mouse-icon">
                 <div className="mouse-wheel">
                   <span className="ion-ios-arrow-up"></span>

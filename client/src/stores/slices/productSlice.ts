@@ -11,6 +11,8 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     getAllProduct(state) {},
+    getInventoryAndSold(state) {},
+    getProductsByIdOfSupplier(state,action: PayloadAction<any>) {},
     retrieveProducts(state, action: PayloadAction<any>) {
       state.listProduct = action.payload;
     },
@@ -52,6 +54,12 @@ export const productSlice = createSlice({
         return pro;
       });
     },
+    removeProductItemInStore(state) {
+      state.productItem = null;
+    },
+    removeListProductInStore(state) {
+      state.listProduct = [];
+    },
   },
 });
 
@@ -65,6 +73,11 @@ export const {
   updateProduct,
   getAllProductByIdOfDetailCate,
   searchProduct,
+  retrieveProductItem,
+  removeProductItemInStore,
+  getInventoryAndSold,
+  removeListProductInStore,
+  getProductsByIdOfSupplier,
 } = productSlice.actions;
 
 export default productSlice.reducer;

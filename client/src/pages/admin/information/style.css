@@ -10,7 +10,7 @@
     width: 100%;
     margin: 20px 0;
 }
-.btn-information>.btn{
+.btn-information>.btn-save{
     display: flex;
     justify-content: center;
 }

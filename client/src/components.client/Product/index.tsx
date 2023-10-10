@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
+import Item from "./Item";
 import { getAllProduct } from "../../stores/slices/productSlice";
-import { Link } from "react-router-dom";
 
 import "./style.css";
+import Pagination from "../../components/Pagination";
+import { getAllDetailBillOfSaleByHashSet } from "../../stores/slices/detailBillOfSaleSlice";
+
+const PAGE_COUNT = 3;
 
 interface Props {
   setIsAddPro?: (val: boolean) => void;
@@ -12,81 +16,53 @@ interface Props {
 }
 const Product = ({ setIsAddPro, setProItem }: Props) => {
   const { listProduct } = useSelector((state: RootState) => state.products);
+  const { listHashSet } = useSelector(
+    (state: RootState) => state.detailBillOfSale
+  );
+
+  const [arrProducts, setArrProducts] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllProduct());
+    dispatch(getAllDetailBillOfSaleByHashSet());
   }, [dispatch]);
-  const handleAddToCart = (product) => {
-  };
+
+  useEffect(() => {
+    if (listProduct.length <= PAGE_COUNT) setArrProducts(listProduct);
+  }, [listProduct, setArrProducts]);
   return (
     <>
-      <div className="row row-product">
+      <div className="row-product">
         <div className="order-md-last">
-          <div className="row row-product">
-            {listProduct.length > 0
-              ? listProduct.map((product, ind) => (
-                  <div
-                    key={ind}
-                    className="colum"
-                    style={{ margin: "0px 15px" }}
-                  >
-                    <div className="product" style={{ width: "250px" }}>
-                      <Link to={"#"} className="img-prod">
-                        <img
-                          className="img-fluid"
-                          src={`/assets/img_product/${product.Anh[0]}`}
-                          alt={`product.Img`}
-                        />
-                        {product.KhuyenMai > 0 && (
-                          <span className="status">{product.KhuyenMai}%</span>
-                        )}
-
-                        <div className="overlay"></div>
-                      </Link>
-                      <div className="text py-3 px-3">
-                        <Link to={"#"} className="product-name">
-                          {product.Ten}
-                        </Link>
-                        <div className="d-flex">
-                          <div className="pricing">
-                            {product.KhuyenMai > 0 ? (
-                              <p className="price">
-                                <span className="mr-2 price-dc">
-                                  {product.GiaBan}đ
-                                </span>
-                                <span className="price-sale">
-                                  {product.GiaBan -
-                                    (product.GiaBan * product.KhuyenMai) / 100}
-                                  đ
-                                </span>
-                              </p>
-                            ) : (
-                              <p className="price">
-                                <span className="price-sale">
-                                  {product.GiaBan}đ
-                                </span>
-                              </p>
-                            )}
-                          </div>
-                          <div className="rating">
-                            <p className="text-right">{/* danh gia */}</p>
-                          </div>
-                        </div>
-                        <p className="bottom-area d-flex px-3">
-                          <Link
-                            to={"/shop/" + product._id}
-                            className="add-to-cart text-center py-2 mr-1"
-                            onClick={() => handleAddToCart(product)}
-                          >
-                            Thêm vào giỏ hàng +
-                          </Link>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))
+          <div className="row" style={{ margin: "0", padding: "0" }}>
+            {arrProducts && arrProducts.length > 0
+              ? arrProducts.map((product: any, ind) => {
+                  if (listHashSet) {
+                    let check: boolean = false;
+                    const arr = listHashSet.map((val, i) => {
+                      if (val.idPro === product.Ma) {
+                        check = true;
+                        return (
+                          <Item product={product} key={ind} sold={val.count} />
+                        );
+                      } else return "";
+                    });
+                    if (check) return arr;
+                    else return <Item product={product} key={ind} />;
+                  } else return <Item product={product} key={ind} />;
+                })
               : "Not found any item"}
+          </div>
+          <div>
+            {listProduct && listProduct.length > PAGE_COUNT && (
+              <Pagination
+                dataPerPage={PAGE_COUNT}
+                setCurrentPageData={setArrProducts}
+                data={listProduct}
+              />
+            )}
           </div>
         </div>
       </div>

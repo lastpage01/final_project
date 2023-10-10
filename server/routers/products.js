@@ -5,17 +5,33 @@ import {
   getAllProduct,
   getAllProductsSortById,
   getProductById,
+  getProductByIdNumber,
   getProductByIdOfDetailCate,
+  getProductByIdOfSupplier,
+  getProductBySortQuantity,
   searchProductByName,
   searchProductByNameAndIdCate,
   updateColorAndSize,
   updateProduct,
+  updateQuantityOfSizeAndColor,
 } from "../DAL/models/productModel";
 
 const productRouter = express.Router();
 
 productRouter.get("/", (req, res) => {
   getAllProduct().then((data) => {
+    res.json({ count: data.length, products: data });
+  });
+});
+productRouter.get("/getProductByIdNumber", (req, res) => {
+  const { id } = req.query;
+  getProductByIdNumber(id).then((data) => {
+    res.json(data);
+  });
+});
+productRouter.get("/getProductByIdOfSupplier", (req, res) => {
+  const { id } = req.query;
+  getProductByIdOfSupplier(id).then((data) => {
     res.json({ count: data.length, products: data });
   });
 });
@@ -60,6 +76,7 @@ productRouter.get("/searchProductByName", (req, res) => {
       res.status(404).send("not found name");
     });
 });
+
 productRouter.get("/searchProductByNameAndIdCate", (req, res) => {
   const { Ten, MaLoai } = req.query;
   searchProductByNameAndIdCate(Ten, MaLoai)
@@ -72,12 +89,19 @@ productRouter.get("/searchProductByNameAndIdCate", (req, res) => {
     });
 });
 
+productRouter.get("/getInventoryAndSold", (req, res) => {
+
+  getProductBySortQuantity().then(data => {
+    res.json(data)
+  })
+
+});
+
 productRouter.delete("/:id", (req, res) => {
   const { id } = req.params;
   deleteProductById(id)
     .then((data) => {
-      if (data) res.json(data);
-      // else res.status(404).send("not found id");
+      res.json(data);
     })
     .catch((e) => {
       res.status(403).send("delete fail");
@@ -103,11 +127,25 @@ productRouter.put("/:id", (req, res) => {
     res.json(data);
   });
 });
+
+productRouter.post("/updateQuantityOfSizeAndColor", (req, res) => {
+  const { id, color, size, quantity, quantityAll } = req.body;
+  updateQuantityOfSizeAndColor(id, color, size, quantity, quantityAll).then(data => {
+    res.json(data)
+  })
+})
+
+productRouter.put("/updateQuantity/:id", (req, res) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+  // console.log(quantity);
+  updateProduct(id, { SoLuong: quantity }).then((data) => {
+    res.json(data);
+  });
+});
 productRouter.put("/updateColorAndSize/:id", (req, res) => {
   const { id } = req.params;
   const { KichThuoc_Mau } = req.body;
-  console.log(KichThuoc_Mau);
-  console.log(id);
   updateColorAndSize({ Ma: id, KichThuoc_Mau: KichThuoc_Mau }).then(data => {
     res.json(data);
   })

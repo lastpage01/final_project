@@ -8,7 +8,7 @@ import { getAllProduct } from "../../../stores/slices/productSlice";
 import "./style.css";
 const Section_3 = () => {
   const dispatch = useDispatch();
-  const { listDetailBill } = useSelector(
+  const { listHashSet } = useSelector(
     (state: RootState) => state.detailBillOfSale
   );
   const { listProduct } = useSelector((state: RootState) => state.products);
@@ -30,8 +30,8 @@ const Section_3 = () => {
         </div>
         <div className="container">
           <div className="row">
-            {listDetailBill &&
-              listDetailBill.map((bill, index) => {
+            {listHashSet &&
+              listHashSet.map((bill, index) => {
                 if (index < 4)
                   return (
                     <div key={index} className="col-sm col-md-6 col-lg ">
@@ -60,30 +60,19 @@ const Section_3 = () => {
                                   </Link>
                                   <div className="d-flex">
                                     <div className="pricing">
-                                      {product.KhuyenMai > 0 ? (
-                                        <p className="price">
-                                          <span className="mr-2 price-dc">
-                                            {product.GiaBan}đ
-                                          </span>
-                                          <span className="price-sale">
-                                            {product.GiaBan -
-                                              (product.GiaBan *
-                                                product.KhuyenMai) /
-                                                100}
-                                            đ
-                                          </span>
-                                        </p>
-                                      ) : (
-                                        <p className="price">
-                                          <span className="price-sale">
-                                            {product.GiaBan}đ
-                                          </span>
-                                        </p>
-                                      )}
+                                      <p className="price">
+                                        <span className="price-sale">
+                                          {product.GiaBan -
+                                            (product.GiaBan *
+                                              product.KhuyenMai) /
+                                              100}
+                                          <span> VND</span>
+                                        </span>
+                                      </p>
                                     </div>
                                     <div className="rating">
                                       <p className="text-right">
-                                        {/* danh gia */}
+                                        Đã bán : {bill.count}
                                       </p>
                                     </div>
                                   </div>

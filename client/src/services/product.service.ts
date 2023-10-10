@@ -15,6 +15,31 @@ export const getProductById = (id: string) => {
     headers: setToken(),
   });
 };
+export const getProductsByIdOfSupplier = (id: string) => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/getProductByIdOfSupplier?id=${id}`,
+    headers: setToken(),
+  });
+};
+
+
+export const getProductByIdNumber = (id) => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/getProductByIdNumber?id=${id}`,
+    headers: setToken(),
+  });
+};
+
+export const getInventoryAndSold = () => {
+  return axios({
+    method: "get",
+    url: `http://localhost:3000/api/products/getInventoryAndSold`,
+    headers: setToken(),
+  });
+};
+
 export const getAllProductByIdOfDetailCate = (id: string) => {
   return axios({
     method: "get",
@@ -65,11 +90,34 @@ export const updateProductById = (product) => {
   });
 };
 
+export const updateQuantity = (id, quantity) => {
+  return axios({
+    method: "put",
+    url: `http://localhost:3000/api/products/updateQuantity/${id}`,
+    headers: setToken(),
+    data: { quantity },
+  });
+};
+
 export const updateColorAndSize = (id, colorAndSize) => {
   return axios({
     method: "put",
     url: `http://localhost:3000/api/products/updateColorAndSize/${id}`,
     headers: setToken(),
     data: { KichThuoc_Mau: colorAndSize },
+  });
+};
+
+export const updateQuantityOfSizeAndColor = (
+  id,
+  color,
+  size,
+  quantity,
+) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/products/updateQuantityOfSizeAndColor`,
+    headers: setToken(),
+    data: { id, color, size, quantity },
   });
 };

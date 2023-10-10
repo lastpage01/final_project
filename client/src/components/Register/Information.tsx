@@ -7,14 +7,16 @@ import {
   validateBirthday,
   validateFullName,
 } from "../../helpers/validator";
-import { register } from "../../services/user.service";
+import { useDispatch } from "react-redux";
+import { registerClient } from "../../stores/slices/userSlice";
 
 interface Props {
   setIsLogin: (val: boolean) => void;
   infoRegister: any;
 }
 const Information = ({ setIsLogin, infoRegister }: Props) => {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const nameState = useInput("", validateFullName);
   const [birthday, setBirthday] = useState("");
@@ -29,19 +31,21 @@ const Information = ({ setIsLogin, infoRegister }: Props) => {
     setBirthday(e.target.value);
   };
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     if (isErr() === false) {
-      const res = await register(
-        infoRegister.phone,
-        infoRegister.password,
-        nameState.value,
-        birthday
+      dispatch(
+        registerClient({
+          name: nameState.value,
+          phone: infoRegister.phone,
+          password: infoRegister.password,
+          birthday,
+          navigate: () => {
+            alert("Đăng ký thành công");
+            setIsLogin(true);
+            navigate("/login");
+          },
+        })
       );
-      if (res.data.success) {
-        alert("Đăng ký thành công");
-        setIsLogin(true);
-        navigator("/login");
-      }
     }
   };
 

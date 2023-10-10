@@ -83,7 +83,6 @@ const ChooseProduct = (props: Props) => {
       });
     }
   };
-
   const isErr = () => {
     if (quantity.err() === true) return true;
     if (Number(quantity.value) > maxQuantity) {
@@ -180,11 +179,11 @@ const ChooseProduct = (props: Props) => {
   };
 
   const handleCreateBillOfSale = () => {
+    isErrCreateBill();
     let total: number = 0;
     listProChoose.forEach((val) => {
       total +=
-        (val.product.GiaBan -
-          (val.product.GiaBan * val.product.KhuyenMai) / 100) *
+        ((val.product.GiaBan * (100 - val.product.KhuyenMai)) / 100) *
         val.quantity;
     });
     if (isErrCreateBill() === false) {
@@ -197,9 +196,11 @@ const ChooseProduct = (props: Props) => {
             SDTNhan: props.phone,
             TenNguoiNhan: props.name,
             TongTien: total,
+            NguoiLap: "QuanLy",
           },
           listProduct: listProChoose,
           navigate: () => {
+            alert("thêm hóa đơn thành công");
             props.handleBack();
           },
         })
@@ -213,6 +214,7 @@ const ChooseProduct = (props: Props) => {
       setMessage("bạn phải điền đầy đủ thông tin");
       return true;
     }
+    setMessage("");
     const arr: any = [];
     listProChoose.forEach((val, ind) => {
       listProduct.forEach((pro) => {
@@ -297,7 +299,7 @@ const ChooseProduct = (props: Props) => {
             error={quantity.isErr}
           />
         </div>
-        <div className="btn-information">
+        <div className="btn-information" style={{ textAlign: "center" }}>
           <div className="btn">
             <Button color="accentPrimary" onPress={handleChooseProduct}>
               Thêm sản phẩm
@@ -329,11 +331,12 @@ const ChooseProduct = (props: Props) => {
                   <td>{val.product.KhuyenMai}</td>
                   <td
                     style={{
-                      padding: "10px 0",
+                      // padding: "10px 0",
                       width: "200px",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
+                      // display: "flex",
+                      // flexDirection: "column",
+                      // justifyContent: "center",
+                      // alignItems:'center'
                     }}
                   >
                     <input
@@ -374,7 +377,10 @@ const ChooseProduct = (props: Props) => {
               <div className="btn error">{message}</div>
             </div>
           )}
-          <div className="btn-information" style={{ marginTop: "50px" }}>
+          <div
+            className="btn-information"
+            style={{ marginTop: "50px", textAlign: "center" }}
+          >
             <div className="btn">
               <Button color="accentPrimary" onPress={handleCreateBillOfSale}>
                 Thêm hóa đơn

@@ -34,9 +34,11 @@ const BillOfSaleTBody = () => {
   };
 
   const handleCancelBill = (id) => {
-    dispatch(
-      cancelBillOfSale({ id, bill: { Huy: true, TrangThai: "Đã hủy" } })
-    );
+    if (window.confirm("Bạn có muốn hủy đơn hàng không?") === true) {
+      dispatch(
+        cancelBillOfSale({ id, bill: { Huy: true, TrangThai: "Đã hủy" } })
+      );
+    }
   };
 
   const handleNextStatus = (bill) => {
@@ -47,6 +49,11 @@ const BillOfSaleTBody = () => {
           id: bill._id,
           bill: { TrangThai: listStatus[ind + 1] },
         })
+      );
+    }
+    if (ind === listStatus.length - 2) {
+      dispatch(
+        updatePayBillOfSale({ id: bill._id, bill: { ThanhToan: true } })
       );
     }
   };
@@ -62,19 +69,22 @@ const BillOfSaleTBody = () => {
             <td>{bill.MaHD}</td>
             <td>{bill.MaKH}</td>
             <td>{new Date(bill.Ngay).toLocaleDateString()}</td>
+            <td>{bill.NguoiLap === "QuanLy" ? "Quản lý" : "Khách hàng"}</td>
             <td>{bill.TongTien}</td>
             <td>
               <div className="wrapper-pay-td">
                 <div>
                   {bill.ThanhToan ? "Đã thanh toán" : "chưa thanh toán"}
                 </div>
-                {!bill.ThanhToan && (
+                {!bill.ThanhToan && !bill.Huy ? (
                   <div
                     className="next-pay"
                     onDoubleClick={() => handleNextPay(bill._id)}
                   >
                     <IconIc24FillPaperplane size={16} />
                   </div>
+                ) : (
+                  ""
                 )}
               </div>
             </td>
@@ -93,19 +103,22 @@ const BillOfSaleTBody = () => {
               </div>
             </td>
             <td>
-              {listStatus.indexOf(bill.TrangThai) < listStatus.length - 1 && (
+              {listStatus.indexOf(bill.TrangThai) < listStatus.length - 1 &&
+              !bill.ThanhToan ? (
                 <div>
                   {bill.Huy ? (
                     <div className="lock-up-account">Đã Hủy</div>
                   ) : (
                     <div
                       className="open-account"
-                      onDoubleClick={() => handleCancelBill(bill._id)}
+                      onClick={() => handleCancelBill(bill._id)}
                     >
                       Hủy
                     </div>
                   )}
                 </div>
+              ) : (
+                ""
               )}
             </td>
             <td>
@@ -127,6 +140,9 @@ const BillOfSaleTBody = () => {
             <DetailBillOfSale
               bill={billItem.current}
               setIsCreate={setOpenModelDetail}
+              url="/admin/quan_ly/hoa_don_ban"
+              isShowOrderer={true}
+              isShowIdProduct={true}
             />
           )}
         </td>

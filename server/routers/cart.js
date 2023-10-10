@@ -1,5 +1,5 @@
 import express from "express";
-import { createCartItem, deleteCartItem, getCartByIdClient, updateCart } from "../DAL/models/cartModel";
+import { createCartItem, deleteCartItem, deleteManyByIdClient, getCartByIdClient, updateCart } from "../DAL/models/cartModel";
 
 const cartRouter = express.Router();
 
@@ -38,6 +38,13 @@ cartRouter.delete("/:id", (req, res) => {
 cartRouter.post("/", (req, res) => {
     const cartItem = req.body;
     createCartItem(cartItem).then((data) => {
+        res.json(data)
+    });
+});
+
+cartRouter.delete("/deleteManyCartByIdClient/:id", (req, res) => {
+    const {id} = req.params;
+    deleteManyByIdClient(id).then((data) => {
         res.json(data)
     });
 });

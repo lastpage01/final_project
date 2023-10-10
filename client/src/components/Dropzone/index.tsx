@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useDropzone, FileWithPath } from "react-dropzone";
+import React, { useEffect } from "react";
+import { useDropzone } from "react-dropzone";
 
 import "./style.css";
+import { fireToBase64 } from "../../helpers/fileToBase64";
+import { Avatar } from "@gapo_ui/components";
 interface Props {
   setAvatarUrl?: (val: any) => void;
   size?: number;
@@ -10,22 +12,18 @@ interface Props {
 const Uploader = ({
   setAvatarUrl = () => {},
   size = 100,
-  avatar = "https://via.placeholder.com/80",
+  avatar = "/assets/avatar.img/avatar.jpg",
 }: Props) => {
-  const [imageSrc, setImageSrc] = useState(avatar);
+  // const [imageSrc, setImageSrc] = useState<any>(avatar);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({});
   const isdragactive = useDropzone({}).isDragActive.toString();
 
-  // const files = acceptedFiles.map((file: FileWithPath) => {(
-  //   <ListItem key={file.path}>
-  //     {file.path} - {Math.round(file.size / 1000)} kB
-  //   </ListItem>
-  // )});
   useEffect(() => {
     if (acceptedFiles[0]) {
-      const src = URL.createObjectURL(acceptedFiles[0]);
-      setImageSrc(src);
-      acceptedFiles.map((file: FileWithPath) => setAvatarUrl(file.path));
+      fireToBase64(acceptedFiles[0]).then((data) => {
+        // const src = URL.createObjectURL(acceptedFiles[0]);
+        setAvatarUrl(data);
+      });
     }
   }, [acceptedFiles, setAvatarUrl]);
 
@@ -36,18 +34,21 @@ const Uploader = ({
     >
       <div
         {...getRootProps({ isdragactive })}
-        style={{ height: `${size}px` }}
+        // style={{ height: `${size}px` }}
         className="wrapper-avatar"
       >
         <input {...getInputProps()} />
-        <img
-          className="avatar-dropzone"
-          style={{ width: `${size}px`, height: `${size}px` }}
-          width={size}
-          height={size}
-          src={imageSrc}
-          alt=""
+        {/* <div> */}
+        <Avatar
+          src={avatar}
+          size={size}
+          UNSAFE_style={{
+            overflow: "hidden",
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
         />
+        {/* </div> */}
       </div>
     </section>
   );

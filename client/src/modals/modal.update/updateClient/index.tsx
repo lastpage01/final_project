@@ -66,6 +66,7 @@ const UpdateClient = ({ setIsUpdate, client }: Props) => {
           birthday,
           address,
           handleBack: () => {
+            alert("cập nhật thành công");
             handleCancel();
           },
         })

@@ -4,6 +4,7 @@ import {
   createClientSuccess,
   retrieveClientItem,
   retrieveClients,
+  retrieveListHashSetClient,
 } from "../slices/clientSlice";
 import {
   createClient,
@@ -11,9 +12,13 @@ import {
   findClientByPhone,
   getAllClients,
   getClientItemById,
+  getListClientAndTotalMoney,
   updateClient,
+  updateInformationClient,
 } from "../../services/client.service";
 import { setMessage } from "../slices/messageSlice";
+import { updateUser } from "../../services/user.service";
+import { updateNameUser } from "../slices/userSlice";
 
 export function* getAllClientSaga() {
   const res = yield call(getAllClients);
@@ -42,6 +47,20 @@ export function* createClientSaga(action: PayloadAction<any>) {
     yield put(setMessage(e.response.data));
   }
 }
+
+export function* getListClientAndTotalMoneySaga(action: PayloadAction<any>) {
+  try {
+    const res = yield call(getListClientAndTotalMoney, action.payload);
+    res.data.sort((a, b) => {
+      if (a.total < b.total) return 1;
+      if (a.total > b.total) return -1;
+      return 0;
+    });
+    yield put(retrieveListHashSetClient(res.data));
+  } catch (e) {}
+}
+
+
 export function* updateClientSaga(action: PayloadAction<any>) {
   try {
     const { id, name, email, sex, birthday, address, handleBack } =
@@ -57,12 +76,24 @@ export function* updateClientSaga(action: PayloadAction<any>) {
       address
     );
     if (res.data) {
-      alert("cập nhật thành công");
       handleBack();
     }
   } catch (e) {
     console.log(e);
   }
+}
+
+export function* updateInformationClientSaga(action: PayloadAction<any>) {
+  try {
+    const { id, client } = action.payload;
+    yield call(updateInformationClient, id, client);
+    yield call(updateUser, client);
+    yield put(updateNameUser(client.Ten));
+    alert("cập nhật thành công");
+    const user = JSON.parse(localStorage.getItem("user")!);
+    user.username = client.Ten;
+    JSON.parse(localStorage.setItem("user", JSON.stringify(user))!);
+  } catch (e) {}
 }
 
 export function* deleteClientSaga(account: PayloadAction<string>) {

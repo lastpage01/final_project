@@ -24,24 +24,28 @@ const Header = ({ avtStr }: Props): JSX.Element => {
     });
   };
   const handleSetting = () => {
-    // navigate("/admin/ho_so");
+    navigate("/admin/ho_so");
+    setDisable((prev) => {
+      return prev ? false : true;
+    });
   };
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
+    setDisable((prev) => {
+      return prev ? false : true;
+    });
   };
   return (
     <div className="wrapper-header">
-      <SearchField border="rounded" placeholder="Tìm kiếm" />
+      {/* <SearchField border="rounded" placeholder="Tìm kiếm" /> */}
+      <div></div>
       <div className="wrapper-header-right">
-        <span className="name">Hi! {user.username}</span>
+        <span>Xin chào!</span>
+        <span className="name"> {user.username}</span>
         <div className={"avatar"} onClick={handleEventDisplay}>
           {user.avatar ? (
-            <Avatar
-              src={`/assets/avatar.img/${user.avatar}`}
-              size={32}
-              alt="icon-80"
-            />
+            <Avatar src={user.avatar} size={32} alt="icon-80" />
           ) : (
             <Avatar size={32} UNSAFE_style={{ background: "#00b3f4" }}>
               {avtStr}

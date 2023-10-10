@@ -14,12 +14,15 @@ import billOfSaleRouter from "./routers/billOfSale";
 import detailBillOfSaleRouter from "./routers/detailBillOfSale";
 import adminRouter from "./routers/admin";
 import cartRouter from "./routers/cart";
+import paymentRouter from "./routers/payment";
+import billImportRouter from "./routers/billImport";
+import detailBillImportRouter from "./routers/detailBillImport";
 // import { authenticateToken } from "./common/authentication";
 
 const app = express();
 const post = 3000;
 
-app.use(express.json());
+app.use(express.json({limit:'100mb'}));
 app.use(cors());
 
 app.get("/", (req, res) => {
@@ -35,9 +38,12 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/detailProduct", detailProRouter);
 app.use("/api/clients", clientRouter);
 app.use("/api/billOfSale", billOfSaleRouter);
+app.use("/api/billImport", billImportRouter);
 app.use("/api/detailBillOfSale", detailBillOfSaleRouter);
+app.use("/api/detailBillImport", detailBillImportRouter);
 app.use("/api/admins", adminRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/payment", paymentRouter);
 
 
 app.listen(post, (res, req) => {

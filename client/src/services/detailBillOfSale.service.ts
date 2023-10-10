@@ -15,6 +15,14 @@ export const getAllDetailBillByHashSet = () => {
     headers: setToken(),
   });
 };
+export const getAllDetailBillByHashSetOfDate = (data) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/detailBillOfSale/getDetailBillOfSaleByHashSetOfDate`,
+    headers: setToken(),
+    data: data,
+  });
+};
 export const getDetailBillOfSaleByIdBill = (id) => {
   return axios({
     method: "get",

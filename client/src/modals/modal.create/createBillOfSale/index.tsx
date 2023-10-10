@@ -39,6 +39,7 @@ const CreateBillOfSale = ({ setIsCreate }: Props) => {
             phone={phone}
             note={note}
             address={address}
+            navigate="/admin/quan_ly/hoa_don_ban/them_moi"
           />
           <ChooseProduct
             client={clientItem}

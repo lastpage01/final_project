@@ -15,6 +15,12 @@ import { useInput } from "../../hooks/useInput";
 import { validateNumber } from "../../helpers/validator";
 import { clearMessage, setMessage } from "../../stores/slices/messageSlice";
 import { useNavigate } from "react-router-dom";
+import { getClientItemByPhone } from "../../stores/slices/clientSlice";
+import {
+  createCartItem,
+  getCartByIdClient,
+  updateCart,
+} from "../../stores/slices/cartSlice";
 
 interface Props {
   product: any;
@@ -40,11 +46,13 @@ const ProductItem = ({ product }: Props) => {
   const { message } = useSelector((state: RootState) => state.message);
   const user = useSelector((state: RootState) => state.user);
   const brand = useSelector((state: RootState) => state.brands.brandItem);
+  const { clientItem } = useSelector((state: RootState) => state.clients);
   const supplier = useSelector(
     (state: RootState) => state.suppliers.supplierItem
   );
   const { detailProItem } = useSelector((state: RootState) => state.detailPro);
-
+  const { listCart } = useSelector((state: RootState) => state.cart);
+    
   useEffect(() => {
     const objectSize = Object.entries(product.KichThuoc_Mau).map(
       (val) => val[1]
@@ -71,6 +79,14 @@ const ProductItem = ({ product }: Props) => {
     product.MaThuongHieu,
   ]);
 
+  useEffect(() => {
+    if (user.isLoggedIn) dispatch(getClientItemByPhone(user.phone));
+  }, [dispatch, user.isLoggedIn, user.phone]);
+
+  useEffect(() => {
+    if (clientItem) dispatch(getCartByIdClient(clientItem.Ma));
+  }, [clientItem, dispatch]);
+
   const handleClickColor = (value: any, ind, color) => {
     let count: number = 0;
     const sizeOfColor: string[] = [];
@@ -84,6 +100,7 @@ const ProductItem = ({ product }: Props) => {
     setIndexColor(ind);
     setIndexSize(-1);
     setSelectColor(color);
+    setSelectSize("");
   };
 
   const handleClickSize = (value: string, ind) => {
@@ -103,19 +120,71 @@ const ProductItem = ({ product }: Props) => {
       if (user.isLoggedIn === false) {
         navigate("/login");
       } else {
-        console.log({
-          SDT: user.phone,
-          MaSP: product.Ma,
-          Mau: selectColor,
-          KichThuoc: selectSize,
-          SoLuong: Number(quantityBuy.value),
-          DonGia: (product.GiaBan * (100 - product.KhuyenMai)) / 100,
-        });
+        const proSelected = isProductInCart();
+        if (!proSelected.check) {
+          dispatch(
+            createCartItem({
+              cartItem: {
+                MaKH: clientItem.Ma,
+                MaSP: product.Ma,
+                Mau: selectColor,
+                KichThuoc: selectSize,
+                SoLuong: Number(quantityBuy.value),
+                DonGia: (product.GiaBan * (100 - product.KhuyenMai)) / 100,
+              },
+              navigate: () => {
+                alert("thêm vào giỏ hàng thành công");
+              },
+            })
+          );
+        } else if (
+          quantity >=
+          Number(quantityBuy.value) + proSelected.quantity
+        ) {
+          dispatch(
+            updateCart({
+              id: proSelected.idCart,
+              cart: {
+                SoLuong: Number(quantityBuy.value) + proSelected.quantity,
+              },
+            })
+          );
+          alert("thêm vào giỏ hàng thành công");
+        } else
+          alert(
+            "Số lượng trong cửa hàng và số lượng chọn vượt quá số lượng sản phẩm"
+          );
       }
+      dispatch(clearMessage());
     }
   };
+
+  const isProductInCart = () => {
+    let check: boolean = false;
+    let idCart = null;
+    let quantity = 0;
+    listCart.forEach((cart) => {
+      if (
+        cart.MaSP === product.Ma &&
+        cart.Mau === selectColor &&
+        cart.KichThuoc === selectSize
+      ) {
+        check = true;
+        idCart = cart._id;
+        quantity = cart.SoLuong;
+      }
+    });
+    return {
+      check,
+      idCart,
+      quantity,
+    };
+  };
   const isErr = () => {
-    if (quantityBuy.err() === true) return true;
+    if (quantityBuy.err() === true) {
+      dispatch(clearMessage());
+      return true;
+    }
     if (Number(quantityBuy.value) > quantity) {
       quantityBuy.setHelperText("số lượng hàng không đủ");
       quantityBuy.setIsErr(true);
@@ -173,7 +242,7 @@ const ProductItem = ({ product }: Props) => {
                 <th
                   className="th-pro-item"
                   style={{
-                    width: "130px",
+                    width: "200px",
                   }}
                 ></th>
                 <th className="th-pro-item"></th>
@@ -261,7 +330,6 @@ const ProductItem = ({ product }: Props) => {
                 <td>
                   <div className="wrapper-input">
                     <InputField
-                      label="Số lượng"
                       placeholder="Số lượng"
                       onChange={onChangeQuantityBuy}
                       value={quantityBuy.value}
@@ -274,7 +342,9 @@ const ProductItem = ({ product }: Props) => {
               <tr>
                 <td></td>
                 <td>
-                  <div className="error">{message}</div>
+                  <div className="error" style={{ textAlign: "left" }}>
+                    {message}
+                  </div>
                 </td>
               </tr>
               <tr>

@@ -13,7 +13,7 @@ const BillOfSale = () => {
   };
 
   return (
-    <WrapperBody title="Danh sách thương hiệu" onClickBtn={handleOpenCreate}>
+    <WrapperBody title="Danh sách hóa đơn bán" onClickBtn={handleOpenCreate}>
       <div>
         {isCreate && <CreateBillOfSale setIsCreate={setIsCreate} />}
         <table>
@@ -22,6 +22,7 @@ const BillOfSale = () => {
               <th>hóa đơn</th>
               <th>khách hàng</th>
               <th>Ngày lập</th>
+              <th>Người lập</th>
               <th>Tổng tiền</th>
               <th>Thanh toán</th>
               <th className="col-status">Trạng thái</th>

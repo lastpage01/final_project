@@ -16,6 +16,15 @@ export const getClientItemById = (id) => {
   });
 };
 
+export const getListClientAndTotalMoney = (data) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/clients/getListClientAndTotalMoney`,
+    headers: setToken(),
+    data: data,
+  });
+};
+
 export const findClientByPhone = (phone) => {
   return axios({
     method: "get",
@@ -25,8 +34,6 @@ export const findClientByPhone = (phone) => {
 };
 
 export const updateClient = (id, name, birthday, email?, sex?, address?) => {
-  console.log(name);
-  
   return axios({
     method: "put",
     url: `http://localhost:3000/api/clients/${id}`,
@@ -41,13 +48,22 @@ export const updateClient = (id, name, birthday, email?, sex?, address?) => {
   });
 };
 
+export const updateInformationClient = (id, client) => {
+  return axios({
+    method: "put",
+    url: `http://localhost:3000/api/clients/${id}`,
+    headers: setToken(),
+    data: client,
+  });
+};
+
 export const createClient = (
   phone: string,
   name: string,
   birthday: string,
   email?: string,
   sex?: string,
-  address?: string,
+  address?: string
 ) => {
   return axios({
     method: "post",

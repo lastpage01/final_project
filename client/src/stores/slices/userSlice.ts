@@ -25,6 +25,7 @@ export const userSlider = createSlice({
   reducers: {
     getMe(state, action: PayloadAction<GetMe>) {},
     login(state, action: PayloadAction<Login>) {},
+    registerClient(state, action: PayloadAction<any>) {},
     loginActionSuccess(state, action: PayloadAction<LoginSuccess>) {
       state.isLoggedIn = true;
       state.username = action.payload.username;
@@ -63,6 +64,7 @@ export const {
   getMe,
   updateAvatarByPhone,
   updateNameUser,
+  registerClient,
 } = userSlider.actions;
 
 export default userSlider.reducer;

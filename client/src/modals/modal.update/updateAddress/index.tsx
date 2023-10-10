@@ -21,6 +21,7 @@ interface Props {
   phone: string;
   address: string;
   note: string;
+  navigate:string
 }
 const UpdateAddress = (props: Props) => {
   const { setIsCreate } = props;
@@ -33,7 +34,8 @@ const UpdateAddress = (props: Props) => {
 
   const handleBack = () => {
     setIsCreate(false);
-    navigate("/admin/quan_ly/hoa_don_ban/them_moi");
+    // navigate("/admin/quan_ly/hoa_don_ban/them_moi");
+    navigate(props.navigate)
   };
   const handleUpdateAddress = () => {
     if (isErr() === false) {

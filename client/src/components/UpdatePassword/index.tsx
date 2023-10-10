@@ -98,7 +98,7 @@ const UpdatePassword = ({phone}:Props) => {
         />
       </div>
       <div className="btn-information">
-        <div className="btn">
+        <div className="btn-save">
           <Button color="accentPrimary" onPress={handleSaveChangePassword}>
             Lưu
           </Button>

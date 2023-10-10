@@ -48,7 +48,7 @@ export const detailCategorySlice = createSlice({
           return {
             ...detailCate,
             Ten: action.payload.name,
-            MaLoai: action.payload.idCate,
+            MaLoai: Number(action.payload.idCate),
           };
         }
         return detailCate;

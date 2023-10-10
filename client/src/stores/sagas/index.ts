@@ -25,7 +25,9 @@ import {
   getAllClients,
   getClientItem,
   getClientItemByPhone,
+  getListClientAndTotalMoney,
   updateClient,
+  updateInformationClient,
 } from "../slices/clientSlice";
 import {
   createDetailCate,
@@ -40,7 +42,9 @@ import {
   deleteProduct,
   getAllProduct,
   getAllProductByIdOfDetailCate,
+  getInventoryAndSold,
   getProductById,
+  getProductsByIdOfSupplier,
   searchProduct,
   updateProduct,
 } from "../slices/productSlice";
@@ -51,7 +55,12 @@ import {
   getSupplierItem,
   updateSupplier,
 } from "../slices/supplierSlice";
-import { login, logout, updateAvatarByPhone } from "../slices/userSlice";
+import {
+  login,
+  logout,
+  registerClient,
+  updateAvatarByPhone,
+} from "../slices/userSlice";
 import {
   createAccountSaga,
   getAllAccountSaga,
@@ -77,7 +86,9 @@ import {
   getAllClientSaga,
   getClientItemByPhoneSaga,
   getClientItemSaga,
+  getListClientAndTotalMoneySaga,
   updateClientSaga,
+  updateInformationClientSaga,
 } from "./client";
 import {
   createDetailCateSaga,
@@ -92,7 +103,9 @@ import {
   deleteProductSaga,
   getAllProductOfDetailCateSaga,
   getAllProductSaga,
+  getInventoryAndSoldSaga,
   getProductByIdSaga,
+  getProductsByIdOfSupplierSaga,
   searchProductSaga,
   updateProductSaga,
 } from "./product";
@@ -103,11 +116,19 @@ import {
   getSupplierItemSaga,
   updateSupplierSaga,
 } from "./supplier";
-import { loginSaga, logoutSaga, updateAvatarByPhoneSaga } from "./user";
+import {
+  loginSaga,
+  logoutSaga,
+  registerClientSaga,
+  updateAvatarByPhoneSaga,
+} from "./user";
 import {
   cancelBillOfSale,
   createBillOfSale,
   getAllBillOfSale,
+  getBillOfSaleByIdClient,
+  getBillOfSaleOfClientOrderByIdClient,
+  getDataChartOfBillOfSale,
   updatePayBillOfSale,
   updateStatusBillOfSale,
 } from "../slices/billOfSaleSlice";
@@ -115,30 +136,69 @@ import {
   cancelBillOfSaleSaga,
   createBillOfSaleSaga,
   getAllBillOfSaleSaga,
+  getBillOfSaleByIdClientSaga,
+  getBillOfSaleOfClientOrderByIdClientSaga,
+  getDataChartBillOfSaleSaga,
   updatePayBillOfSaleSaga,
   updateStatusBillOfSaleSaga,
 } from "./billOfSale";
 import {
   getAllDetailBillOfSaleByHashSet,
+  getDetailBillOfSaleByHashSetOfDate,
   getDetailBillOfSaleByIdBill,
 } from "../slices/detailBillOfSaleSlice";
 import {
   getAllDetailBillByHashSetSaga,
+  getDetailBillByHashSetOfDateSaga,
   getDetailBillOfSaleByIdBillSaga,
 } from "./detailBillOfSale";
 import { getAdminItemByPhone, updateAdmin } from "../slices/adminSlice";
 import { getAdminByPhoneSaga, updateAdminSaga } from "./admin";
-import { deleteCartItem, getCartByIdClient, updateCart } from "../slices/cartSlice";
-import { deleteCartItemSaga, getCartByIdClientSaga, updateCartSaga } from "./cart";
+import {
+  createCartItem,
+  deleteCartItem,
+  deleteManyCartByIdClient,
+  getCartByIdClient,
+  updateCart,
+} from "../slices/cartSlice";
+import {
+  createCartItemSaga,
+  deleteCartItemSaga,
+  deleteManyCartByIdClientSaga,
+  getCartByIdClientSaga,
+  updateCartSaga,
+} from "./cart";
+import {
+  cancelBillImport,
+  createBillImport,
+  getAllBillImport,
+  updatePayBillImport,
+  updateStatusBillImport,
+} from "../slices/billImportSlice";
+import {
+  cancelBillImportSaga,
+  createBillImportSaga,
+  getAllBillImportSaga,
+  updatePayBillImportSaga,
+  updateStatusBillImportSaga,
+} from "./billImport";
+import { getDetailBillImportByIdBill } from "../slices/detailBillImportSlice";
+import { getDetailBillImportByIdBillSaga } from "./detailBillImport";
 
 function* root() {
   yield takeLatest(login.type, loginSaga);
   yield takeLatest(logout.type, logoutSaga);
+  yield takeLatest(registerClient.type, registerClientSaga);
   yield takeLatest(updateAvatarByPhone.type, updateAvatarByPhoneSaga);
   yield takeLatest(getAllProduct.type, getAllProductSaga);
+  yield takeLatest(getInventoryAndSold.type, getInventoryAndSoldSaga);
   yield takeLatest(searchProduct.type, searchProductSaga);
   yield takeLatest(getAllDetailCategory.type, getAllDetailCategorySaga);
   yield takeLatest(getProductById.type, getProductByIdSaga);
+  yield takeLatest(
+    getProductsByIdOfSupplier.type,
+    getProductsByIdOfSupplierSaga
+  );
   yield takeLatest(
     getAllProductByIdOfDetailCate.type,
     getAllProductOfDetailCateSaga
@@ -173,6 +233,7 @@ function* root() {
   yield takeLatest(getAllClients.type, getAllClientSaga);
   yield takeLatest(createClient.type, createClientSaga);
   yield takeLatest(updateClient.type, updateClientSaga);
+  yield takeLatest(updateInformationClient.type, updateInformationClientSaga);
   yield takeLatest(deleteClient.type, deleteClientSaga);
   yield takeLatest(getClientItem.type, getClientItemSaga);
   yield takeLatest(getClientItemByPhone.type, getClientItemByPhoneSaga);
@@ -181,19 +242,44 @@ function* root() {
   yield takeLatest(updateStatusBillOfSale.type, updateStatusBillOfSaleSaga);
   yield takeLatest(updatePayBillOfSale.type, updatePayBillOfSaleSaga);
   yield takeLatest(createBillOfSale.type, createBillOfSaleSaga);
+  yield takeLatest(getDataChartOfBillOfSale.type, getDataChartBillOfSaleSaga);
   yield takeLatest(
     getDetailBillOfSaleByIdBill.type,
     getDetailBillOfSaleByIdBillSaga
   );
   yield takeLatest(
+    getDetailBillOfSaleByHashSetOfDate.type,
+    getDetailBillByHashSetOfDateSaga
+  );
+  yield takeLatest(
+    getBillOfSaleOfClientOrderByIdClient.type,
+    getBillOfSaleOfClientOrderByIdClientSaga
+  );
+  yield takeLatest(
     getAllDetailBillOfSaleByHashSet.type,
     getAllDetailBillByHashSetSaga
+  );
+  yield takeLatest(getBillOfSaleByIdClient.type, getBillOfSaleByIdClientSaga);
+  yield takeLatest(
+    getListClientAndTotalMoney.type,
+    getListClientAndTotalMoneySaga
   );
   yield takeLatest(getAdminItemByPhone.type, getAdminByPhoneSaga);
   yield takeLatest(updateAdmin.type, updateAdminSaga);
   yield takeLatest(getCartByIdClient.type, getCartByIdClientSaga);
   yield takeLatest(updateCart.type, updateCartSaga);
   yield takeLatest(deleteCartItem.type, deleteCartItemSaga);
+  yield takeLatest(createCartItem.type, createCartItemSaga);
+  yield takeLatest(deleteManyCartByIdClient.type, deleteManyCartByIdClientSaga);
+  yield takeLatest(getAllBillImport.type, getAllBillImportSaga);
+  yield takeLatest(updatePayBillImport.type, updatePayBillImportSaga);
+  yield takeLatest(updateStatusBillImport.type, updateStatusBillImportSaga);
+  yield takeLatest(cancelBillImport.type, cancelBillImportSaga);
+  yield takeLatest(createBillImport.type, createBillImportSaga);
+  yield takeLatest(
+    getDetailBillImportByIdBill.type,
+    getDetailBillImportByIdBillSaga
+  );
 }
 
 export default root;

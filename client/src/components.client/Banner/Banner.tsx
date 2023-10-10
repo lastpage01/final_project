@@ -5,8 +5,14 @@ interface Props{
     title?:string,
     bread?:string
     backgroundImg?:string
+    fun?:(a,b)=>void
 }
 const Banner = ({title="",bread="",backgroundImg=bg_6}:Props) => {
+  const func = (a,b)=>{
+    return a+b
+  }
+  console.log(func(6,7));
+  
   return (
     <div
       className="hero-wrap hero-bread"

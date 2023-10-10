@@ -16,3 +16,11 @@ export const convertValueDateToString = (value: string): any => {
   const m = Number(date[1]) < 10 ? `0${Number(date[1])}` : date[1];
   return `${date[2]}-${m}-${d}`;
 };
+
+export const formatDate = (value: string): any => {
+  const date = new Date(value);
+  const d = date.getDate();
+  const m = Number(date.getMonth()) + 1;
+  const y = date.getFullYear()
+  return `${d}-${m}-${y}`;
+};

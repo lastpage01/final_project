@@ -6,7 +6,7 @@ import "./style.css";
 import UpdateAddress from "../../modals/modal.update/updateAddress";
 
 interface Props {
-  clientItem: any;
+  clientItem?: any;
   setName: (val: string) => void;
   setPhone: (val: string) => void;
   setAddress: (val: string) => void;
@@ -15,9 +15,10 @@ interface Props {
   phone: string;
   address: string;
   note: string;
+  navigate?: string;
 }
 const DeliveryAddress = ({
-  clientItem,
+  clientItem = null,
   setName,
   setPhone,
   setAddress,
@@ -26,6 +27,7 @@ const DeliveryAddress = ({
   phone,
   address,
   note,
+  navigate = "/",
 }: Props) => {
   const [error, setError] = useState<string>("");
 
@@ -85,6 +87,7 @@ const DeliveryAddress = ({
             phone={phone}
             note={note}
             address={address}
+            navigate={navigate}
           />
         )}
       </div>

@@ -4,13 +4,20 @@ import { Avatar } from "@gapo_ui/components";
 import { IoMdSettings } from "react-icons/io";
 import { BiLogIn } from "react-icons/bi";
 import { IconIc24FillArrowheadDown } from "@gapo_ui/icon";
+import { IconIc24FillDocCheck } from "@gapo_ui/icon";
 
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
 import { logout } from "../../stores/slices/userSlice";
-import { getClientItemByPhone } from "../../stores/slices/clientSlice";
-import { getCartByIdClient } from "../../stores/slices/cartSlice";
+import {
+  getClientItemByPhone,
+  removeClientItemInStore,
+} from "../../stores/slices/clientSlice";
+import {
+  getCartByIdClient,
+  removeCartInClient,
+} from "../../stores/slices/cartSlice";
 
 let listMenuInfo = [
   {
@@ -49,17 +56,23 @@ const Header = ({ avtStr }: Props) => {
   };
 
   useEffect(() => {
-    dispatch(getClientItemByPhone(user.phone));
+    if (user.phone) dispatch(getClientItemByPhone(user.phone));
   }, [dispatch, user.phone]);
   useEffect(() => {
     if (clientItem && clientItem.Ma) dispatch(getCartByIdClient(clientItem.Ma));
   }, [clientItem, dispatch]);
   const handleSetting = () => {
     setDisable((prev) => !prev);
-    // navigate("/admin/ho_so");
+    navigate("/setting");
+  };
+  const handlePurchase = () => {
+    setDisable((prev) => !prev);
+    navigate("/purchase");
   };
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(removeCartInClient());
+    dispatch(removeClientItemInStore());
     navigate("/");
     setDisable((prev) => !prev);
   };
@@ -158,8 +171,8 @@ const Header = ({ avtStr }: Props) => {
               ))}
               <li className="nav-item cta cta-colored item">
                 <Link to={"/cart"} className="nav-link">
-                  <span className="icon-shopping_cart"></span>
-                  [{listCart.length}]
+                  <span className="icon-shopping_cart"></span>[{listCart.length}
+                  ]
                 </Link>
               </li>
               <li className="nav-item nav-item-avt">
@@ -169,7 +182,7 @@ const Header = ({ avtStr }: Props) => {
                     <div className={"avatar"} onClick={handleEventDisplay}>
                       {user.avatar ? (
                         <Avatar
-                          src={`/assets/avatar.img/${user.avatar}`}
+                          src={user.avatar}
                           size={32}
                           alt="icon-80"
                         />
@@ -189,6 +202,14 @@ const Header = ({ avtStr }: Props) => {
                     </div>
                     {disable && (
                       <div className="user">
+                        <div className="purchase" onClick={handlePurchase}>
+                          <IconIc24FillDocCheck
+                            size={20}
+                            color="contentTertiary"
+                          />
+                          <span>Đơn mua</span>
+                        </div>
+                        <div className="line" />
                         <div className="setting" onClick={handleSetting}>
                           <IoMdSettings size={20} />
                           <span>Cài đặt</span>

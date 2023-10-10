@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Slider from "../../components/Slider";
 import { RootState } from "../../stores";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { getDetailCategoryItem } from "../../stores/slices/detailCategorySlice";
 import { convertSex } from "../../helpers/convert";
 import { getBrandItem } from "../../stores/slices/brandSlice";
@@ -25,6 +24,9 @@ const ProItem = ({ product }: Props) => {
     (state: RootState) => state.suppliers.supplierItem
   );
   const { detailProItem } = useSelector((state: RootState) => state.detailPro);
+
+  const [indexColor, setIndexColor] = useState(-1);
+  const [indexSize, setIndexSize] = useState(-1);
 
   useEffect(() => {
     const objectSize = Object.entries(product.KichThuoc_Mau).map(
@@ -52,7 +54,7 @@ const ProItem = ({ product }: Props) => {
     product.MaThuongHieu,
   ]);
 
-  const handleClickColor = (value: any) => {
+  const handleClickColor = (value: any, ind: number) => {
     let count: number = 0;
     const sizeOfColor: string[] = [];
     Object.entries(value).forEach((val) => {
@@ -62,13 +64,16 @@ const ProItem = ({ product }: Props) => {
     setSize(sizeOfColor);
     setQuantity(count);
     setObjectSize(value);
+    setIndexColor(ind);
+    setIndexSize(-1);
   };
 
-  const handleClickSize = (value: string) => {
+  const handleClickSize = (value: string, ind: number) => {
     if (objectSize)
       for (let key in objectSize) {
         if (key === value) setQuantity(objectSize[key]);
       }
+    setIndexSize(ind);
   };
   return (
     <>
@@ -100,14 +105,14 @@ const ProItem = ({ product }: Props) => {
           </div>
         </div>
         <div className="detail-product">
-          <h3>{product.Ten}</h3>
+          <h4>{product.Ten}</h4>
           <table>
             <thead>
               <tr>
                 <th
                   className="th-pro-item"
                   style={{
-                    width: "100px",
+                    width: "130px",
                   }}
                 ></th>
                 <th className="th-pro-item"></th>
@@ -126,20 +131,20 @@ const ProItem = ({ product }: Props) => {
                       <div className="item-price">
                         {product.GiaBan -
                           (product.GiaBan * product.KhuyenMai) / 100}
-                        đ
+                        <span> VND</span>
                       </div>
                       <del className="item-price" style={{ color: "gray" }}>
-                        {product.GiaBan}đ
+                        {product.GiaBan} VND
                       </del>
                     </div>
                   ) : (
-                    <>{product.GiaBan}đ</>
+                    <>{product.GiaBan} VND</>
                   )}
                 </td>
               </tr>
               <tr>
                 <td>Giá Nhập:</td>
-                <td>{product.GiaNhap}đ</td>
+                <td>{product.GiaNhap} VND</td>
               </tr>
               <tr>
                 <td>Màu sắc:</td>
@@ -149,8 +154,10 @@ const ProItem = ({ product }: Props) => {
                       return (
                         <div
                           key={ind}
-                          className="item"
-                          onClick={() => handleClickColor(val[1])}
+                          className={
+                            indexColor === ind ? `item active` : "item"
+                          }
+                          onClick={() => handleClickColor(val[1], ind)}
                         >
                           {val[0]}
                         </div>
@@ -167,8 +174,10 @@ const ProItem = ({ product }: Props) => {
                       size.map((val, ind) => (
                         <div
                           key={ind}
-                          className="item"
-                          onClick={() => handleClickSize(val)}
+                          className={
+                            indexSize === ind ? `item active` : "item"
+                          }
+                          onClick={() => handleClickSize(val,ind)}
                         >
                           {val}
                         </div>

@@ -11,8 +11,13 @@ export const getAllProduct = () => {
 export const getProductById = (id) => {
   return model.findById(id).exec();
 };
+
+export const getProductBySortQuantity = (id) => {
+  return model.find().sort({ SoLuong: -1 }).exec();
+};
+
 export const getProductByIdNumber = (id) => {
-  return model.find({ Ma: id }).exec();
+  return model.find({ Ma: id }).limit(1).exec();
 };
 export const getProductByIdOfDetailCate = (id) => {
   return model.find({ MaLoai: id }).exec();
@@ -51,6 +56,9 @@ export const updateColorAndSize = (product) => {
   return model.updateOne({ Ma: product.Ma }, { $set: { KichThuoc_Mau: product.KichThuoc_Mau } });
 };
 
+export const updateQuantityOfSizeAndColor = (id, color, size, quantity) => {
+  return model.updateOne({ Ma: id }, { $set: { ['KichThuoc_Mau.' + color + '.' + size]: quantity} });
+};
 
 export const updateProduct = (id, product) => {
   return model.findByIdAndUpdate(id, {

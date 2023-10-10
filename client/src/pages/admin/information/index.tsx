@@ -7,7 +7,7 @@ import { RootState } from "../../../stores";
 import { getAdminItemByPhone } from "../../../stores/slices/adminSlice";
 
 import "./style.css";
-import UpdatePassword from "../../../components.admin/UpdatePassword";
+import UpdatePassword from "../../../components/UpdatePassword";
 import UpdateInformation from "../../../components.admin/UpdateInformation";
 import { updateAvatarByPhone } from "../../../stores/slices/userSlice";
 const Information = () => {
@@ -23,16 +23,25 @@ const Information = () => {
     if (avatarUrl)
       dispatch(updateAvatarByPhone({ SDT: user.phone, Anh: avatarUrl }));
   }, [avatarUrl, dispatch, user.phone]);
-
+  const handleClearAvatar = () => {
+    const isClear = window.confirm("Bạn có muốn xóa ảnh đại diện không");
+    if (isClear) {
+      dispatch(updateAvatarByPhone({ SDT: user.phone, Anh: "" }));
+      setAvatarUrl("");
+    }
+  };
   return (
     <WrapperBody isBtn={false}>
       <div>
-        <div className="wrapper-avatar-account">
+        <div className="wrapper-avatar-account wrapper-avatar-client">
           <Uploader
             setAvatarUrl={setAvatarUrl}
             size={150}
-            avatar={`/assets/avatar.img/${user.avatar}`}
+            avatar={user.avatar ? user.avatar : `/assets/avatar.img/avatar.jpg`}
           />
+          <div className="clear-avatar" onClick={handleClearAvatar}>
+            Xóa ảnh đại diện
+          </div>
         </div>
         {adminItem && <UpdateInformation admin={adminItem} />}
         <UpdatePassword phone={user.phone} />

@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: any = {
   listBill: [],
+  dataChart: [],
   billItem: null,
 };
 
@@ -11,6 +12,8 @@ export const billOfSaleSlice = createSlice({
   initialState,
   reducers: {
     getAllBillOfSale(state) {},
+    getBillOfSaleByIdClient(state, action: PayloadAction<any>) {},
+    getBillOfSaleOfClientOrderByIdClient(state, action: PayloadAction<any>) {},
     retrieveAllBillOfSale(state, action: PayloadAction<any>) {
       state.listBill = action.payload;
     },
@@ -18,6 +21,12 @@ export const billOfSaleSlice = createSlice({
     retrieveBillOfSaleItem(state, action: PayloadAction<any>) {
       state.billItem = action.payload;
     },
+
+    getDataChartOfBillOfSale(state, action: PayloadAction<any>) {},
+    retrieveDataChartOfBillOfSale(state, action: PayloadAction<any>) {
+      state.dataChart = action.payload;
+    },
+
     cancelBillOfSale(state, action: PayloadAction<any>) {
       const { id, bill } = action.payload;
       state.listBill = state.listBill.map((b) => {
@@ -57,13 +66,14 @@ export const billOfSaleSlice = createSlice({
     },
     createBillOfSale(state, action: PayloadAction<any>) {},
     createBillOfSaleSuccess(state, action: PayloadAction<any>) {
-      state.listBill.push(action.payload);
+      state.listBill.unshift(action.payload);
     },
   },
 });
 
 export const {
   getAllBillOfSale,
+  getBillOfSaleByIdClient,
   retrieveAllBillOfSale,
   getBillOfSaleItem,
   retrieveBillOfSaleItem,
@@ -72,6 +82,9 @@ export const {
   updatePayBillOfSale,
   createBillOfSale,
   createBillOfSaleSuccess,
+  getBillOfSaleOfClientOrderByIdClient,
+  getDataChartOfBillOfSale,
+  retrieveDataChartOfBillOfSale,
 } = billOfSaleSlice.actions;
 
 export default billOfSaleSlice.reducer;

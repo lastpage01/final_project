@@ -45,8 +45,6 @@ const UpdateDetailCate = ({
     }
   };
   const handleCloseModel = () => {
-    console.log(idCate);
-
     setOpenModel(false);
     if (url) navigate(url);
     nameState.reset();

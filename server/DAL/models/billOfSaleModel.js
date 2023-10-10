@@ -4,10 +4,29 @@ import { BillOfSaleSchema } from "../schemas/billOfSaleSchema";
 const model = mongoose.model("hoadonbans", BillOfSaleSchema);
 
 export const getAllBillOfSale = () => {
-  return model.find().exec();
+  return model.find().sort({ Ngay: -1 }).exec();
 };
 export const getBillOfSaleById = (id) => {
   return model.findById(id).exec();
+};
+export const getBillOfSaleCancel = () => {
+  return model.find({ Huy: true }).exec();
+};
+export const getBillOfSaleNotCancel = () => {
+  return model.find({ Huy: false }).exec();
+};
+
+export const getBillOfSaleBought = () => {
+  return model.find({ Huy: false, TrangThai: 'Đã giao' }).exec();
+};
+export const getBillOfSaleBuying = () => {
+  return model.find({ Huy: false, TrangThai: { $in: ['Đang xử lý', 'Chờ giao hàng'] } }).exec();
+};
+export const getBillOfSaleByIdClient = (id) => {
+  return model.find({ MaKH: id }).sort({ Ngay: -1 }).exec();
+};
+export const getBillOfSaleOfClientOrderByIdClient = (id) => {
+  return model.find({ MaKH: id, NguoiLap: 'KhachHang' }).sort({ Ngay: -1 }).exec();
 };
 export const getAllBillOfSaleSortById = () => {
   return model.find().sort({ MaHD: -1 }).exec();

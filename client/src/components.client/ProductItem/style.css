@@ -6,6 +6,9 @@
 .container-add-cart th {
   border: none;
 }
+.container-add-cart tr td{
+  padding: 3px 0;
+}
 
 .container-add-cart tr:hover {
   background-color: #f8f9fa !important;

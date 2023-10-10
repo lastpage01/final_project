@@ -5,7 +5,9 @@ import {
   deleteProductById,
   getAllProduct,
   getAllProductByIdOfDetailCate,
+  getInventoryAndSold,
   getProductById,
+  getProductsByIdOfSupplier,
   searchProductByName,
   searchProductByNameAndIdCate,
   updateColorAndSize,
@@ -14,6 +16,7 @@ import {
 import {
   createProductSuccess,
   deleteProduct,
+  retrieveProductItem,
   retrieveProducts,
 } from "../slices/productSlice";
 import { deleteDetailPro } from "../../services/detailPro";
@@ -21,6 +24,15 @@ import { deleteDetailPro } from "../../services/detailPro";
 export function* getAllProductSaga() {
   try {
     const res = yield call(getAllProduct);
+    yield put(retrieveProducts(res.data.products));
+  } catch (e) {
+    console.log(e);
+  }
+}
+export function* getProductsByIdOfSupplierSaga(action: PayloadAction<any>) {
+  const { id } = action.payload;
+  try {
+    const res = yield call(getProductsByIdOfSupplier, id);
     yield put(retrieveProducts(res.data.products));
   } catch (e) {
     console.log(e);
@@ -41,16 +53,25 @@ export function* getProductByIdSaga(action: PayloadAction<string>) {
     const id = action.payload;
     const res = yield call(getProductById, id);
 
-    if (res.data) yield put(retrieveProducts([res.data]));
+    if (res.data) yield put(retrieveProductItem(res.data));
   } catch (e) {
     console.log(e);
   }
 }
+
+export function* getInventoryAndSoldSaga() {
+  try {
+    const res = yield call(getInventoryAndSold);
+
+    if (res.data) yield put(retrieveProducts(res.data));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* searchProductSaga(action: PayloadAction<any>) {
   try {
     const { name, idCate } = action.payload;
-    console.log(name, idCate);
-
     if (idCate) {
       const res = yield call(searchProductByNameAndIdCate, name, idCate);
       yield put(retrieveProducts(res.data));

@@ -83,7 +83,7 @@ const ColorAndSize = ({ openModel, setOpenModel, setCount }: Props) => {
     size.setValue(e.target.value.toLocaleUpperCase());
   };
   const onChangeQuantity = (e) => {
-    quantity.setValue(e.target.value);
+    if (e.target.value !== "-") quantity.setValue(e.target.value);
   };
 
   const handleClickItemColorAndSize = (c, s, q) => {

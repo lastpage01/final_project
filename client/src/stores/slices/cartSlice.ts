@@ -30,9 +30,28 @@ export const cartSlice = createSlice({
         (cart) => cart._id !== action.payload
       );
     },
+    deleteManyCartByIdClient(state, action: PayloadAction<any>) {
+      state.listCart = [];
+    },
+    removeCartInClient(state) {
+      state.listCart = [];
+    },
+    createCartItem(state, action: PayloadAction<any>) {},
+    createCartItemSuccess(state, action: PayloadAction<any>) {
+      state.listCart.push(action.payload);
+    },
   },
 });
 
-export const { getCartByIdClient, retrieveCart,updateCart,deleteCartItem } = cartSlice.actions;
+export const {
+  getCartByIdClient,
+  retrieveCart,
+  updateCart,
+  deleteCartItem,
+  removeCartInClient,
+  createCartItem,
+  createCartItemSuccess,
+  deleteManyCartByIdClient
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

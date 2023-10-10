@@ -25,3 +25,19 @@ export const deleteCartItem = (id) => {
     headers: setToken(),
   });
 };
+
+export const deleteManyCartByIdClient = (id) => {
+  return axios({
+    method: "delete",
+    url: `http://localhost:3000/api/cart/deleteManyCartByIdClient/${id}`,
+    headers: setToken(),
+  });
+};
+export const createCartItem = (cartItem) => {
+  return axios({
+    method: "post",
+    url: `http://localhost:3000/api/cart`,
+    headers: setToken(),
+    data: cartItem,
+  });
+};

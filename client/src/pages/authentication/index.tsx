@@ -8,7 +8,7 @@ import Register from "../../components/Register";
 const Authentication = () => {
   const [styleContainer, setStyleContainer] = useState("");
   const [isLogIn, setIsLogin] = useState(true);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLogIn) setStyleContainer("");
@@ -16,17 +16,20 @@ const Authentication = () => {
   }, [isLogIn]);
   const handleSignUp = () => {
     setIsLogin(false);
-    navigator("/register");
+    navigate("/register");
   };
   const handleSignIn = () => {
     setIsLogin(true);
-    navigator("/login");
+    navigate("/login");
   };
   const user = JSON.parse(localStorage.getItem("user")!);
   if (user) {
     if (user.position === "QuanLy") return <Navigate to={"/admin"} />;
     else return <Navigate to={"/"} />;
   }
+  const handleToShop = () => {
+    navigate("/");
+  };
   return (
     <div className="wrapper-auth">
       <div className={`container ${styleContainer}`} id="container">
@@ -39,6 +42,9 @@ const Authentication = () => {
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
+              <div className="title-website" onClick={handleToShop}>
+                WINKEL
+              </div>
               <h3>Chào mừng trở lại!</h3>
               <p>
                 Để giữ kết nối với chúng tôi, vui lòng đăng nhập bằng thông tin
@@ -54,6 +60,9 @@ const Authentication = () => {
               </button>
             </div>
             <div className="overlay-panel overlay-right">
+              <div className="title-website" onClick={handleToShop}>
+                WINKEL
+              </div>
               <h3>Chào bạn!</h3>
               <p>
                 Nhập thông tin cá nhân của bạn và bắt đầu hành trình với chúng

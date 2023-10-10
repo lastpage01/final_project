@@ -13,4 +13,5 @@ export const BillOfSaleSchema = new mongoose.Schema({
   Huy: Boolean,
   DiaChi: String,
   GhiChu: String,
+  NguoiLap: String,
 });

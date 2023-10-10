@@ -30,7 +30,7 @@ const AccountTBody = () => {
               <td height={50} width={60}>
                 {acc.Anh ? (
                   <Avatar
-                    src={`/assets/avatar.img/${acc.Anh}`}
+                    src={`${acc.Anh}`}
                     size={40}
                     alt="icon-80"
                   />
